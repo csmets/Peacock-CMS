@@ -1,4 +1,7 @@
 <?php
+    include_once('peacock/plugins/FavouritePosts/FavouritePostsFunction.php');
+    $favouritePosts = new FavouritePosts;
+
     $EditId = $_GET['postID'];
 
     $analytics = new PageAnalytics;
@@ -87,6 +90,25 @@
                                                class="searchTextBox searchIcon" placeholder="Search for Posts">
 										<input type="submit" class='searchButton' value="Search"/>
 									</form>
+								</div>
+							</div>
+                            <!-- Widgets -->
+							<div class="widgets">
+								<h4>Must Reads</h4>
+								<!-- Widgets Content -->
+								<div class="widgets-content">
+                                    <!-- List -->
+                                    <?php
+
+                                        $favArray = array();
+                                        $favArray = $favouritePosts->getFavouritePosts();
+
+                                        foreach($favArray as $post){
+                                            echo $post;
+                                            echo "<br>";
+                                        }
+
+                                    ?>
 								</div>
 							</div>
 							<!-- Widgets -->

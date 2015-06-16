@@ -1,4 +1,8 @@
 <?php
+    include_once('peacock/plugins/FavouritePosts/FavouritePostsFunction.php');
+    $favouritePosts = new FavouritePosts;
+
+
     $Pageid = 2;
 
     $analytics = new PageAnalytics;
@@ -92,6 +96,27 @@
 									</form>
 								</div>
 							</div>
+                            
+                            <!-- Widgets -->
+							<div class="widgets">
+								<h4>Must Reads</h4>
+								<!-- Widgets Content -->
+								<div class="widgets-content">
+                                    <!-- List -->
+                                    <?php
+
+                                        $favArray = array();
+                                        $favArray = $favouritePosts->getFavouritePosts();
+
+                                        foreach($favArray as $post){
+                                            echo $post;
+                                            echo "<br>";
+                                        }
+
+                                    ?>
+								</div>
+							</div>
+                            
 							<!-- Widgets -->
 							<div class="widgets">
 								<h4>Categories</h4>
