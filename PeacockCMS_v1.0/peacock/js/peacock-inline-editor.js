@@ -19,11 +19,10 @@ function init_Peacock_InlineEditor(){
         var insertSubPageToolbar = false;
         var insertImageToolbar = false;
         
-        var getClass = null;
-        
         $("div").click(function(){
-            if ($(this).attr("contentEditable") == "true"){
-                getClass = this.className;
+             if ($(this).attr("contentEditable") == "true"){
+                var getClass = this.className;
+
                 var eTop = $("."+getClass).offset().top;
                 var CurrentPos = eTop - $(window).scrollTop();
 
@@ -46,29 +45,24 @@ function init_Peacock_InlineEditor(){
                 }
 
                 var offsetHeight = $(".toolbar").height() + 30;
-                 
                 if (headingsToolbar == false && textLinkToolbar == false && insertSubPageToolbar == false && insertImageToolbar == false){
                     if (hideToolbar == false && CurrentPos > 100){
                         $(".toolbar").fadeIn(200);
                         $(".toolbar").insertBefore("."+getClass);
                         $(".toolbar").css({"-ms-transform": "translate(0px,-"+offsetHeight+"px)",
-                                           "-webkit-transform": "translate(0px,-"+offsetHeight+"px)",
-                                           "transform": "translate(0px,-"+offsetHeight+"px)"});
+            "-webkit-transform": "translate(0px,-"+offsetHeight+"px)",
+            "transform": "translate(0px,-"+offsetHeight+"px)"});
                     }
                     else if(hideToolbar == false && CurrentPos < 100){
                         $(".toolbar").fadeIn(200);
                         $(".toolbar").insertAfter("."+getClass);
                         $(".toolbar").css({"-ms-transform": "translate(0px,10px)",
-                                           "-webkit-transform": "translate(0px,10px)",
-                                           "transform": "translate(0px,10px)"});
+            "-webkit-transform": "translate(0px,10px)",
+            "transform": "translate(0px,10px)"});
                     }
                 }else{
                     $(".toolbar").hide();
                 }
-            }else{
-                hideToolbar = false;
-            }
-        });
 
 
                 $("#headings").click(function(){
@@ -102,13 +96,16 @@ function init_Peacock_InlineEditor(){
                     insertImageToolbar = true;
                     $(".toolbar").hide();
                 });
-                 
-                $("#saveEditSource").click(function(){
-                    var htmlcode = $("#codeEditor").val();
-                    $("."+getClass).html(htmlcode);
-                    $(".codeEditor-bg").hide();
-                    $(".codeEditor-box").hide();
-                });
+             }else{
+                hideToolbar = false;
+             }
+            
+            $("#saveEditSource").click(function(){
+                var htmlcode = $("#codeEditor").val();
+                $("."+getClass).html(htmlcode);
+                $(".codeEditor-bg").hide();
+                $(".codeEditor-box").hide();
+            });
 
             $("#cancelEditSource").click(function(){
                 $(".codeEditor-bg").hide();
@@ -159,6 +156,7 @@ function init_Peacock_InlineEditor(){
                 hideToolbar = false;
                 $(".toolbar").fadeIn(200);
             });
+        });
         
         
         //Edit Image
