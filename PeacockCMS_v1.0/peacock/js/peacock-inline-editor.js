@@ -19,10 +19,11 @@ function init_Peacock_InlineEditor(){
         var insertSubPageToolbar = false;
         var insertImageToolbar = false;
         
+        var getClass = null;
+        
         $("div").click(function(){
-             if ($(this).attr("contentEditable") == "true"){
-                var getClass = this.className;
-
+            if ($(this).attr("contentEditable") == "true"){
+                getClass = this.className;
                 var eTop = $("."+getClass).offset().top;
                 var CurrentPos = eTop - $(window).scrollTop();
 
@@ -45,37 +46,33 @@ function init_Peacock_InlineEditor(){
                 }
 
                 var offsetHeight = $(".toolbar").height() + 30;
+                 
                 if (headingsToolbar == false && textLinkToolbar == false && insertSubPageToolbar == false && insertImageToolbar == false){
                     if (hideToolbar == false && CurrentPos > 100){
                         $(".toolbar").fadeIn(200);
                         $(".toolbar").insertBefore("."+getClass);
                         $(".toolbar").css({"-ms-transform": "translate(0px,-"+offsetHeight+"px)",
-            "-webkit-transform": "translate(0px,-"+offsetHeight+"px)",
-            "transform": "translate(0px,-"+offsetHeight+"px)"});
+                                           "-webkit-transform": "translate(0px,-"+offsetHeight+"px)",
+                                           "transform": "translate(0px,-"+offsetHeight+"px)"});
                     }
                     else if(hideToolbar == false && CurrentPos < 100){
                         $(".toolbar").fadeIn(200);
                         $(".toolbar").insertAfter("."+getClass);
                         $(".toolbar").css({"-ms-transform": "translate(0px,10px)",
-            "-webkit-transform": "translate(0px,10px)",
-            "transform": "translate(0px,10px)"});
+                                           "-webkit-transform": "translate(0px,10px)",
+                                           "transform": "translate(0px,10px)"});
                     }
                 }else{
                     $(".toolbar").hide();
                 }
-
-
+                
                 $("#headings").click(function(){
                     displayHeadingsToolbar(getClass, CurrentPos, offsetHeight);
                     hideToolbar = true;
                     headingsToolbar = true;
                     $(".toolbar").hide();
                 });
-
-                $("#editSource").click(function(){
-                    displaySourceCode(getClass);
-                });
-
+                
                 $("#textlink").click(function(){
                     displayCreateLink(getClass, CurrentPos, offsetHeight);
                     hideToolbar = true;
@@ -96,22 +93,12 @@ function init_Peacock_InlineEditor(){
                     insertImageToolbar = true;
                     $(".toolbar").hide();
                 });
-             }else{
+                
+                
+            }else{
                 hideToolbar = false;
-             }
+            }
             
-            $("#saveEditSource").click(function(){
-                var htmlcode = $("#codeEditor").val();
-                $("."+getClass).html(htmlcode);
-                $(".codeEditor-bg").hide();
-                $(".codeEditor-box").hide();
-            });
-
-            $("#cancelEditSource").click(function(){
-                $(".codeEditor-bg").hide();
-                $(".codeEditor-box").hide();
-            });
-
             $("#closeMainToolbar").click(function(){
                 hideToolbar = true;
                 $(".toolbar").fadeOut(200);
@@ -157,11 +144,33 @@ function init_Peacock_InlineEditor(){
                 $(".toolbar").fadeIn(200);
             });
         });
+
+
+                
+
+        $("#editSource").click(function(){
+            displaySourceCode(getClass);
+        });
+
+        $("#saveEditSource").click(function(){
+            var htmlcode = $("#codeEditor").val();
+            $("."+getClass).html(htmlcode);
+            $(".codeEditor-bg").hide();
+            $(".codeEditor-box").hide();
+        });
+
+        $("#cancelEditSource").click(function(){
+            $(".codeEditor-bg").hide();
+            $(".codeEditor-box").hide();
+        });
         
-        
+
         //Edit Image
+        
+        var imageHolder = null;
+        
         $("img").click(function(){
-            var imageHolder = this;
+            imageHolder = this;
             var eTop = $(this).offset().top;
             var CurrentPos = eTop - $(window).scrollTop();
             var offsetHeight = $(".toolbar-editImage").height()+10;
@@ -180,7 +189,17 @@ function init_Peacock_InlineEditor(){
     "transform": "translate(0px,10px)"});
             }
             
-            $("#UpdateImage").click(function(){
+            
+            
+            $("#closeEditImage").click(function(){
+                $(".toolbar-editImage").fadeOut(200); 
+            })
+            
+            
+            
+        });
+        
+        $("#UpdateImage").click(function(){
                 var getWidth = $("#editImageWidth").val();
                 var getHeight = $("#editImageHeight").val();
                 if (getWidth != null){
@@ -191,16 +210,10 @@ function init_Peacock_InlineEditor(){
                 }
                 $(".toolbar-editImage").fadeOut(200);
             });
-            
-            $("#closeEditImage").click(function(){
-                $(".toolbar-editImage").fadeOut(200); 
-            })
-            
-            $("#deleteImage").click(function(){
-               $(imageHolder).remove();
-                $(".toolbar-editImage").fadeOut(200); 
-            });
-            
+        
+        $("#deleteImage").click(function(){
+           $(imageHolder).remove();
+            $(".toolbar-editImage").fadeOut(200); 
         });
         
     }
@@ -218,8 +231,12 @@ function init_Peacock_InlineEditor(){
         $(".toolbar-makelink").remove();
         $(".toolbar-subPageLink").remove();
         $(".toolbar-insertImage").remove();
+        $(".toolbar-insertImageSelector").remove();
+        $(".toolbar-insertImageURL").remove();
+        $(".toolbar-insertImageLibrary").remove();
         $(".codeEditor-bg").remove();
         $(".codeEditor-box").remove();
+        $(".toolbar-editImage").remove();
     }
 }
 
