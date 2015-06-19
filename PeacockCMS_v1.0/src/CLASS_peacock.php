@@ -552,7 +552,7 @@ class Peacock {
         }   
     }
     
-    private function returnPageLink($type, $id){
+    public function returnPageLink($type, $id){
         if ($type == 'normal' || $type == 'homepage'){
             if($id == 1){
                 $pageLink = "index.php";
@@ -573,6 +573,29 @@ class Peacock {
             $pageLink = $this->getPageLink($id);
         }
         return $pageLink;
+    }
+    
+    public function getSiteLinksArray(){
+        
+        $array = array();
+        
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,"SELECT * FROM pages ORDER BY pageorder");
+        
+        $appendArray = array();
+        
+        while ($get_data = mysqli_fetch_assoc($data)){
+            $appendArray = array(
+                $get_data['id'],
+                $get_data['isGrouped'],
+                $get_data['groupID'],
+                $get_data['pagetype']
+            );
+            $array[] = $appendArray;
+        }
+        
+        return $array;
     }
     
     public function getPageLink($id){
@@ -779,7 +802,7 @@ class Peacock {
     
     public function getTemplateContent(){
         @$template = $_GET['template'];
-        if ($template != 'NewTemplate'){
+        if ($template != 'blankPage' || $template != 'NewTemplate'){
             $sqlconnect = new Connectdb;
             $db = $sqlconnect->connectTo();
             $data = mysqli_query($db, "SELECT * FROM templates WHERE id='$template'");
@@ -1787,7 +1810,10 @@ class Peacock {
         $template = $_GET['template'];
         @$editTemplate = $_GET['e'];
         
-        if ($template == 'NewTemplate'){
+        if ($template == 'blankPage'){
+            $this->editorBar($nameBox, 0, $type);
+        }
+        elseif ($template == 'NewTemplate'){
             $this->editorBar_classname = "Template-Editable";
             $this->editorBar_template = true;
             $this->editorBar($nameBox, 0, $type);
