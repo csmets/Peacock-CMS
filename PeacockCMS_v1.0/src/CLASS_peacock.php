@@ -695,129 +695,156 @@ class Peacock {
 
 
 
-	/*  ===== Fetch Functions Start ========  */
+
+
 	
-	public function fetchImageFolders(){
+	/*  ===== Check Functions Start ========  */
+	
+	public function checkPostIDExists ($id){
 		$sqlconnect = new Connectdb;
         $db = $sqlconnect->connectTo();
-		$data = mysqli_query($db, "SELECT * FROM imageFolders ORDER BY folderOrder");
-		while ($get_data = mysqli_fetch_assoc($data)){
-			echo "<a href='viewImages.php?folder="
-			.$get_data['folderName']."'><ul><li><img src='Images/folder.png'></li><li>"
-			.$get_data['folderName']."</li></ul></a>";
+		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
+		$get_FindData = mysqli_fetch_assoc($FindData);
+		if ($get_FindData['id'] != null){
+			$db->close();
+			return TRUE;
 		}
-		$db->close();
+		else {
+			$db->close();
+			return FALSE;
+		}
 	}
 	
-	public function fetchImageList($folder, $path = null){
+	public function checkPostIDExistsNoDrafts ($id){
 		$sqlconnect = new Connectdb;
-    	$db = $sqlconnect->connectTo();
-		$sql = "SELECT * FROM images ORDER BY imageOrder";
-		$query = mysqli_query($db,$sql);
-		$count = 0;
-		while ($get_data = mysqli_fetch_assoc($query)){
-			
-			if ($get_data['imageFolder'] == $folder){
-				echo "<a href='".$path."image/".$get_data['image']."' data-lightbox='$folder' data-title='";
-				if ($get_data['imagename'] != null){
-					echo $get_data['imagename']."'>
-					<ul><li><img src='".$path."image/"
-					.$get_data['image']."'></li><li><p>"
-					.$get_data['imagename']."</p>";
-					
-				}else{
-					echo $get_data['image']."'><ul><li><img src='".$path."image/"
-					.$get_data['image']."'></li><li><p>"
-					.$get_data['image']."</p>";
-				}
-				echo "<a href='RenameImage.php?file="
-				.$get_data['image']."&id="
-				.$get_data['id']."&folder="
-				.$get_data['imageFolder']
-				."'><span class='pEditLinkButton'>Rename</span></a></li></ul></a>";
-				$count++;
-			}
-			
+        $db = $sqlconnect->connectTo();
+		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
+		$get_FindData = mysqli_fetch_assoc($FindData);
+		if ($get_FindData['id'] != null && $get_FindData['draft'] == 'no'){
+			$db->close();
+			return TRUE;
 		}
-		
-		if ($count < 1){
-			echo "<h2>EMPTY FOLDER</h2>";
+		else {
+			$db->close();
+			return FALSE;
 		}
-		
-		$db->close();
+	}
+    
+    public function checkPostIDisActive ($id){
+		$sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
+		$get_FindData = mysqli_fetch_assoc($FindData);
+		if ($get_FindData['id'] != null && $get_FindData['status'] == 'active'){
+			$db->close();
+			return TRUE;
+		}
+		else {
+			$db->close();
+			return FALSE;
+		}
 	}
 	
-	public function fetchImageSortList($folder, $path = null){
+	public function checkImageFolderExist($folder){
 		$sqlconnect = new Connectdb;
-    	$db = $sqlconnect->connectTo();
-		$sql = "SELECT * FROM images ORDER BY imageOrder";
-		$query = mysqli_query($db,$sql);
-		$count = 0;
-		while ($get_data = mysqli_fetch_assoc($query)){
-			
-			if ($get_data['imageFolder'] == $folder){
-				echo "<li id='item_".$get_data['id']."'><img src='".$path."image/".$get_data['image']."' width='50px'><br>".$get_data['image']."</li>";
-				$count++;
-			}
-			
+        $db = $sqlconnect->connectTo();
+		$FindData = mysqli_query($db,"SELECT * FROM imageFolders WHERE folderName='$folder'");
+		$get_FindData = mysqli_fetch_assoc($FindData);
+		if ($get_FindData['folderName'] != null){
+			$db->close();
+			return TRUE;
 		}
-		
-		if ($count < 1){
-			echo "<h2>EMPTY FOLDER</h2>";
+		else {
+			$db->close();
+			return FALSE;
 		}
-		
-		$db->close();
 	}
-	
-	public function fetchImageFolderNames(){
-		$sqlconnect = new Connectdb;
-    	$db = $sqlconnect->connectTo();
-		$sql = "SELECT * FROM imageFolders ORDER BY folderOrder";
-		$query = mysqli_query($db,$sql);
-		while ($get_data = mysqli_fetch_assoc($query)){
-			echo "<li id='item_".$get_data['id']."'>".$get_data['folderName']."</li>";
-		}
-		$db->close();
-	}
-    
-    
-    public function fetchListOfTemplates($type){
-        $sqlconnect = new Connectdb;
-    	$db = $sqlconnect->connectTo();
-        $data = mysqli_query($db, "SELECT * FROM templates ORDER BY templateOrder");
-        $html = '';
-        while($get_data = mysqli_fetch_assoc($data)){
-            $html .= '
-            <a href="../CreatePage.php?type='.$type.'&template='.$get_data['id'].'">
-                <ul>
-                    <li><img src="Images/templateIcon.png" style="width:60px"></li>
-                    <li>'.$get_data['templateName'].'<br>
-                    <a class="pEditLinkButton" href="../CreatePage.php?type='.$type.'&template='.$get_data['id'].'&e=yes">Edit</a><a class="pDeleteLinkButton" href="deleteTemplate.php?template='.$get_data['id'].'">Delete</a>
-                    </li>
-                </ul>
-            </a>';
-        }
-        print $html;
-    }
-    
-    public function getTemplateContent(){
-        @$template = $_GET['template'];
-        if ($template != 'blankPage' || $template != 'NewTemplate'){
+
+    public function checkUser ($user){
+        if ($user != null){
             $sqlconnect = new Connectdb;
             $db = $sqlconnect->connectTo();
-            $data = mysqli_query($db, "SELECT * FROM templates WHERE id='$template'");
+            $data = mysqli_query($db,"SELECT * FROM users WHERE username='$user'");
             $get_data = mysqli_fetch_assoc($data);
-            if ($get_data != null){
-                echo $get_data['templateContent'];
+             if (strtolower($get_data['username']) == strtolower($user))
+            {
+                return true;
+            }else{
+                header("location:accessviolation.php");
             }
+            $db->close();
+        }
+        else{
+           header("location:accessviolation.php");
         }
     }
 
-	/*  ===== Fetch Functions End ========  */
+    public function checkPrivileges($user){
+        $GetUser = "SELECT * FROM users WHERE username='$user'";
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,$GetUser);
+
+        $Retrieve = mysqli_fetch_array($data);
+
+        $EditorType = $Retrieve['acctype'];
+
+        return $EditorType;
+        $db->close();
+    }
+
+    public function checkPluginExist($plugin){
+        $GetPlugin = "SELECT * FROM plugins WHERE pluginName='$plugin'";
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,$GetPlugin);
+
+        $Retrieve = mysqli_fetch_array($data);
+
+        if ($Retrieve['pluginName'] != null){
+            return true;
+        }else{
+            return false;
+        }
+
+        $db->close();
+    }
+    
+    public function checkSiteImageStatus(){
+        $getSite = "SELECT * FROM site";
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,$getSite);
+
+        $Retrieve = mysqli_fetch_array($data);
+
+        if ($Retrieve['useimage'] != null){
+            return $Retrieve['useimage'];
+        }else{
+            return null;
+        }
+
+        $db->close();  
+    }
+	
+	/*  ===== Check Functions End ========  */
+	
+	
+
+	/*  ===== Additional Functions Start ========  */
 
 
-
-
+	public function removeHashTags ($string){
+		preg_match_all("/(#\w+)/", $string, $matches);
+		foreach ($matches[0] as $tag){
+			$string = str_replace($tag, "", $string);	
+		}
+		return $string;
+	}	
+	
+	/*  ===== Additional Functions End ========  */	
+	
+	
 	/*  ===== Display Functions Start ========  */
 
     public function displayPostImage($id){
@@ -1061,162 +1088,7 @@ class Peacock {
     }
 
 
-	/*  ===== Display Functions End ========  */
-
-
-
-
-	
-	/*  ===== Check Functions Start ========  */
-	
-	public function checkPostIDExists ($id){
-		$sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
-		$get_FindData = mysqli_fetch_assoc($FindData);
-		if ($get_FindData['id'] != null){
-			$db->close();
-			return TRUE;
-		}
-		else {
-			$db->close();
-			return FALSE;
-		}
-	}
-	
-	public function checkPostIDExistsNoDrafts ($id){
-		$sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
-		$get_FindData = mysqli_fetch_assoc($FindData);
-		if ($get_FindData['id'] != null && $get_FindData['draft'] == 'no'){
-			$db->close();
-			return TRUE;
-		}
-		else {
-			$db->close();
-			return FALSE;
-		}
-	}
-    
-    public function checkPostIDisActive ($id){
-		$sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-		$FindData = mysqli_query($db,"SELECT * FROM blog WHERE id='$id'");
-		$get_FindData = mysqli_fetch_assoc($FindData);
-		if ($get_FindData['id'] != null && $get_FindData['status'] == 'active'){
-			$db->close();
-			return TRUE;
-		}
-		else {
-			$db->close();
-			return FALSE;
-		}
-	}
-	
-	public function checkImageFolderExist($folder){
-		$sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-		$FindData = mysqli_query($db,"SELECT * FROM imageFolders WHERE folderName='$folder'");
-		$get_FindData = mysqli_fetch_assoc($FindData);
-		if ($get_FindData['folderName'] != null){
-			$db->close();
-			return TRUE;
-		}
-		else {
-			$db->close();
-			return FALSE;
-		}
-	}
-
-    public function checkUser ($user){
-        if ($user != null){
-            $sqlconnect = new Connectdb;
-            $db = $sqlconnect->connectTo();
-            $data = mysqli_query($db,"SELECT * FROM users WHERE username='$user'");
-            $get_data = mysqli_fetch_assoc($data);
-             if (strtolower($get_data['username']) == strtolower($user))
-            {
-                return true;
-            }else{
-                header("location:accessviolation.php");
-            }
-            $db->close();
-        }
-        else{
-           header("location:accessviolation.php");
-        }
-    }
-
-    public function checkPrivileges($user){
-        $GetUser = "SELECT * FROM users WHERE username='$user'";
-        $sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-        $data = mysqli_query($db,$GetUser);
-
-        $Retrieve = mysqli_fetch_array($data);
-
-        $EditorType = $Retrieve['acctype'];
-
-        return $EditorType;
-        $db->close();
-    }
-
-    public function checkPluginExist($plugin){
-        $GetPlugin = "SELECT * FROM plugins WHERE pluginName='$plugin'";
-        $sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-        $data = mysqli_query($db,$GetPlugin);
-
-        $Retrieve = mysqli_fetch_array($data);
-
-        if ($Retrieve['pluginName'] != null){
-            return true;
-        }else{
-            return false;
-        }
-
-        $db->close();
-    }
-    
-    public function checkSiteImageStatus(){
-        $getSite = "SELECT * FROM site";
-        $sqlconnect = new Connectdb;
-        $db = $sqlconnect->connectTo();
-        $data = mysqli_query($db,$getSite);
-
-        $Retrieve = mysqli_fetch_array($data);
-
-        if ($Retrieve['useimage'] != null){
-            return $Retrieve['useimage'];
-        }else{
-            return null;
-        }
-
-        $db->close();  
-    }
-	
-	/*  ===== Check Functions End ========  */
-	
-	
-
-	/*  ===== Additional Functions Start ========  */
-
-
-	public function removeHashTags ($string){
-		preg_match_all("/(#\w+)/", $string, $matches);
-		foreach ($matches[0] as $tag){
-			$string = str_replace($tag, "", $string);	
-		}
-		return $string;
-	}	
-	
-	/*  ===== Additional Functions End ========  */	
-	
-	
-	
-	
-	
+	/*  ===== Display Functions End ========  */	
 	
 	
 	
@@ -1278,48 +1150,6 @@ class Peacock {
         echo "</style>";   
     }
 	
-
-    // Old and needs revisit.
-	public function generateParallaxAnimation ($html){
-		
-		$doc = new DOMDocument;
-		$doc->loadHTML($html);
-		$div = $doc->getElementsByTagName('div');
-
-		
-		foreach ($div as $node){
-			if ($node->getAttribute('id') == 'BGIparallax'){
-						
-				foreach ($node->attributes as $attr){
-								
-					if ($attr->nodeName == 'parallaximg'){
-						$image = $attr->nodeValue;
-					}
-					
-					if ($attr->nodeName == 'anchor'){
-						$anchor = $attr->nodeValue;
-					}
-								
-				}
-						
-				echo "<div
-						class=\"parallax-image-wrapper parallax-image-wrapper-100\"
-						data-anchor-target=\"#$anchor + .gap\"
-						data-bottom-top=\"transform:translate3d(0px, 200%, 0px)\"
-						data-top-bottom=\"transform:translate3d(0px, 0%, 0px)\">
-				
-							<div
-								class=\"parallax-image parallax-image-100\"
-								style=\"background-image:url(image/$image)\"
-								data-anchor-target=\"#$anchor + .gap\"
-								data-bottom-top=\"transform: translate3d(0px, -80%, 0px);\"
-								data-top-bottom=\"transform: translate3d(0px, 80%, 0px);\"
-							></div>
-						</div>";
-			}
-		}
-		
-	}
 
 
 	public function initBlogFeed ($html){
@@ -1517,7 +1347,7 @@ class Peacock {
     public $editorBar_template = false;
     public $editorBar_templateID = 0;
 	
-	//Peacock Control Panel Code =============================================
+
 	public function editorBar($nameBox = true, $pageID = 0, $pageType = 'normal'){
 
 		//Declarations
@@ -1828,8 +1658,135 @@ class Peacock {
         }
     }
     
+//************************************************************************
+//************************************************************************    
     
+//Peacock Control Panel Code =============================================
+    
+//************************************************************************    
+//************************************************************************
+    
+    /*  ===== Fetch Functions Start ========  */
+	
+	public function fetchImageFolders(){
+		$sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+		$data = mysqli_query($db, "SELECT * FROM imageFolders ORDER BY folderOrder");
+		while ($get_data = mysqli_fetch_assoc($data)){
+			echo "<a href='viewImages.php?folder="
+			.$get_data['folderName']."'><ul><li><img src='Images/folder.png'></li><li>"
+			.$get_data['folderName']."</li></ul></a>";
+		}
+		$db->close();
+	}
+	
+	public function fetchImageList($folder, $path = null){
+		$sqlconnect = new Connectdb;
+    	$db = $sqlconnect->connectTo();
+		$sql = "SELECT * FROM images ORDER BY imageOrder";
+		$query = mysqli_query($db,$sql);
+		$count = 0;
+		while ($get_data = mysqli_fetch_assoc($query)){
+			
+			if ($get_data['imageFolder'] == $folder){
+				echo "<a href='".$path."image/".$get_data['image']."' data-lightbox='$folder' data-title='";
+				if ($get_data['imagename'] != null){
+					echo $get_data['imagename']."'>
+					<ul><li><img src='".$path."image/"
+					.$get_data['image']."'></li><li><p>"
+					.$get_data['imagename']."</p>";
+					
+				}else{
+					echo $get_data['image']."'><ul><li><img src='".$path."image/"
+					.$get_data['image']."'></li><li><p>"
+					.$get_data['image']."</p>";
+				}
+				echo "<a href='RenameImage.php?file="
+				.$get_data['image']."&id="
+				.$get_data['id']."&folder="
+				.$get_data['imageFolder']
+				."'><span class='pEditLinkButton'>Rename</span></a></li></ul></a>";
+				$count++;
+			}
+			
+		}
+		
+		if ($count < 1){
+			echo "<h2>EMPTY FOLDER</h2>";
+		}
+		
+		$db->close();
+	}
+	
+	public function fetchImageSortList($folder, $path = null){
+		$sqlconnect = new Connectdb;
+    	$db = $sqlconnect->connectTo();
+		$sql = "SELECT * FROM images ORDER BY imageOrder";
+		$query = mysqli_query($db,$sql);
+		$count = 0;
+		while ($get_data = mysqli_fetch_assoc($query)){
+			
+			if ($get_data['imageFolder'] == $folder){
+				echo "<li id='item_".$get_data['id']."'><img src='".$path."image/".$get_data['image']."' width='50px'><br>".$get_data['image']."</li>";
+				$count++;
+			}
+			
+		}
+		
+		if ($count < 1){
+			echo "<h2>EMPTY FOLDER</h2>";
+		}
+		
+		$db->close();
+	}
+	
+	public function fetchImageFolderNames(){
+		$sqlconnect = new Connectdb;
+    	$db = $sqlconnect->connectTo();
+		$sql = "SELECT * FROM imageFolders ORDER BY folderOrder";
+		$query = mysqli_query($db,$sql);
+		while ($get_data = mysqli_fetch_assoc($query)){
+			echo "<li id='item_".$get_data['id']."'>".$get_data['folderName']."</li>";
+		}
+		$db->close();
+	}
+    
+    
+    public function fetchListOfTemplates($type){
+        $sqlconnect = new Connectdb;
+    	$db = $sqlconnect->connectTo();
+        $data = mysqli_query($db, "SELECT * FROM templates ORDER BY templateOrder");
+        $html = '';
+        while($get_data = mysqli_fetch_assoc($data)){
+            $html .= '
+            <a href="../CreatePage.php?type='.$type.'&template='.$get_data['id'].'">
+                <ul>
+                    <li><img src="Images/templateIcon.png" style="width:60px"></li>
+                    <li>'.$get_data['templateName'].'<br>
+                    <a class="pEditLinkButton" href="../CreatePage.php?type='.$type.'&template='.$get_data['id'].'&e=yes">Edit</a><a class="pDeleteLinkButton" href="deleteTemplate.php?template='.$get_data['id'].'">Delete</a>
+                    </li>
+                </ul>
+            </a>';
+        }
+        print $html;
+    }
+    
+    public function getTemplateContent(){
+        @$template = $_GET['template'];
+        if ($template != 'blankPage' || $template != 'NewTemplate'){
+            $sqlconnect = new Connectdb;
+            $db = $sqlconnect->connectTo();
+            $data = mysqli_query($db, "SELECT * FROM templates WHERE id='$template'");
+            $get_data = mysqli_fetch_assoc($data);
+            if ($get_data != null){
+                echo $get_data['templateContent'];
+            }
+        }
+    }
 
+
+    
+    
     public function fetchImagesLimited($path = null){
         $sqlconnect = new Connectdb;
         $db = $sqlconnect->connectTo();
@@ -2339,7 +2296,13 @@ class Peacock {
         $db->close();
     }
 	
-	
+    
+    
+	/*  ===== Fetch Functions End ========  */	
+    
+    
+    
+    
 	
 	public function setActiveStatus ($id, $string){
 		$sqlconnect = new Connectdb;
