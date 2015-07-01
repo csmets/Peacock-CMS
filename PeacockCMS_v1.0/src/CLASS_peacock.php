@@ -38,7 +38,7 @@ class Peacock {
                 return $json['body'];
             }
         }else{
-            $string = $get_data['postcontent'];
+            $string = stripslashes($get_data['postcontent']);
 
             if ($showTags == false){
                 $string = $this->removeHashTags($string);
@@ -188,7 +188,7 @@ class Peacock {
         }else{
         	$postName = $get_data['posttitle'];
         }
-        return $postName;
+        return stripslashes($postName);
         $db->close();
     }
     public function getPageName ($id, $removeTags = false){
@@ -202,7 +202,7 @@ class Peacock {
         }else{
         	$pageName = $get_data['pagename'];
         }
-        return $pageName;
+        return stripslashes($pageName);
         $db->close();
     }
 
@@ -224,7 +224,7 @@ class Peacock {
                 echo 'NO DRAFT FILE FOUND!';    
             }
         }else{
-            return $get_data['bodycontent'];
+            return stripslashes($get_data['bodycontent']);
         }
         $db->close();
     }
