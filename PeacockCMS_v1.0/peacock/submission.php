@@ -646,7 +646,8 @@
 		//=============================================================
 		elseif ($subType == 'createTemplate'){
 
-            $templateContent = $_POST['pagecontent'];			
+            $templateContent = $_POST['pagecontent'];
+            $templateContent = addslashes($templateContent);
 			$templateName = $_POST['pagename'];
 			$isDraft = $_POST['draft'];
 			
@@ -685,7 +686,8 @@
 		elseif ($subType == 'editTemplate'){
             
             $templateID = $_POST['templateID'];
-            $templateContent = $_POST['pagecontent'];			
+            $templateContent = $_POST['pagecontent'];
+            $templateContent = addslashes($templateContent);
 			$templateName = $_POST['pagename'];
 			$isDraft = $_POST['draft'];
 			

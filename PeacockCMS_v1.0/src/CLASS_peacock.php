@@ -1346,6 +1346,7 @@ class Peacock {
     public $editorBar_contentID = "SaveContent";
     public $editorBar_template = false;
     public $editorBar_templateID = 0;
+    private $editorBar_title = NULL;
 	
 
 	public function editorBar($nameBox = true, $pageID = 0, $pageType = 'normal'){
@@ -1420,7 +1421,10 @@ class Peacock {
 		        <td width='260px' class='phLarge'>PEACOCK EDITOR</td>";
 
 		    if ($nameBox == true){
-		    	$topbar .= "<td><input type='text' class='pPageNameField' id='".$titlePasser."' value='".$pageName."' size='35' /></td>";
+                if ($this->editorBar_title != NULL){
+                    $topbar .= "<td><input type='text' class='pPageNameField' id='".$titlePasser."' value='".$this->editorBar_title."' size='35' /></td>";
+                }else{
+		    	$topbar .= "<td><input type='text' class='pPageNameField' id='".$titlePasser."' value='".$pageName."' size='35' /></td>";}
 		    }    
 		        
 		$topbar .=  "<td style='color:white'>
@@ -1652,6 +1656,7 @@ class Peacock {
             if ($editTemplate == 'yes'){
                 $this->editorBar_classname = "Template-Editable";
                 $this->editorBar_template = true;
+                $this->editorBar_title = $this->getTemplateName($template);
             }
             $this->editorBar_templateID = $template;
             $this->editorBar($nameBox, $ID, $type); 
@@ -1779,9 +1784,17 @@ class Peacock {
             $data = mysqli_query($db, "SELECT * FROM templates WHERE id='$template'");
             $get_data = mysqli_fetch_assoc($data);
             if ($get_data != null){
-                echo $get_data['templateContent'];
+                echo stripslashes($get_data['templateContent']);
             }
         }
+    }
+    
+    public function getTemplateName($id){
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db, "SELECT * FROM templates WHERE id='$id'");
+        $get_data = mysqli_fetch_assoc($data);
+        return $get_data['templateName'];
     }
 
 
