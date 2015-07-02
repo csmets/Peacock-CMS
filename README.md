@@ -13,11 +13,16 @@ This is what the Peacock Dashboard looks like: Everything quick and easy to acce
 ![inlineEditor](http://peacockcms.com/inlineEditor.jpg)
 
 - Create Pages and Blog Posts
+
 - Create Image Galleries
+
 - Easily Organise your images
+
 - Edit your page source in the editor
 ![sourceediting](http://peacockcms.com/EditSource.png)
+
 - Easily build your own templates with small amounts of php code.
+
 - 3 Responsive Themes to play with.
 
 # Install
