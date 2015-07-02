@@ -10,7 +10,7 @@ This is what the Peacock Dashboard looks like: Everything quick and easy to acce
 
 # Features
 - Inline Editing (custom built; feel free to add you own tools and changes to the inline editor).
-![inlineEditor](http://peacockcms.com/inlineEditor.jpg =250x)
+<img src=“http://peacockcms.com/inlineEditor.jpg” alt=“inlineEditor” style=“width: 200px;”/>
 
 - Create Pages and Blog Posts
 
@@ -19,7 +19,7 @@ This is what the Peacock Dashboard looks like: Everything quick and easy to acce
 - Easily Organise your images
 
 - Edit your page source in the editor
-![sourceediting](http://peacockcms.com/EditSource.png =250x)
+<img src=“http://peacockcms.com/EditSource.png” alt=“sourceediting” style=“width: 200px;”/>
 
 - Easily build your own templates with small amounts of php code.
 
