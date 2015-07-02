@@ -3,6 +3,9 @@ A simple PHP/MYSQL content management system that helps developers and designers
 
 Download a Zip copy of the current source and completely change the code to how you want it or Fork it and make changes that can help all of us.
 
+This is what the Peacock Dashboard looks like: Everything quick and easy to access. No digging of hidden menus.
+![Peacock Dashboard](http://www.clydesmets.com/view/image/peacockdashboard.png)
+
 # Install
 To instal, it’s very simple.
 
@@ -22,6 +25,10 @@ For users who want to run this locally you will need to define a local domain. I
 Unfortunately, the way the framework has been setup you can not use the site under a subfolder. For example you have a main site here mysite.com and you want to have a sub site using peacock like mysite.com/peacocksite/ it will not work ;(
 
 You will instead have to create a sub domain pointing to that folder for this to work. I will try to work on fixing this issue.
+
+# Links
+[Peacock CMS Homepage](http://peacockcms.com)
+[Peacock Documentation](http://docs.peacockcms.com)
 
 # License
 GNU General Public License V3
