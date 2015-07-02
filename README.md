@@ -3,8 +3,22 @@ A simple PHP/MYSQL content management system that helps developers and designers
 
 Download a Zip copy of the current source and completely change the code to how you want it or Fork it and make changes that can help all of us.
 
+# Dashboard
+
 This is what the Peacock Dashboard looks like: Everything quick and easy to access. No digging of hidden menus.
 ![Peacock Dashboard](http://www.clydesmets.com/view/image/peacockdashboard.png)
+
+# Features
+- Inline Editing (custom built; feel free to add you own tools and changes to the inline editor).
+![inlineEditor](http://peacockcms.com/inlineEditor.jpg)
+
+- Create Pages and Blog Posts
+- Create Image Galleries
+- Easily Organise your images
+- Edit your page source in the editor
+![sourceediting](http://peacockcms.com/EditSource.png)
+- Easily build your own templates with small amounts of php code.
+- 3 Responsive Themes to play with.
 
 # Install
 To instal, it’s very simple.
