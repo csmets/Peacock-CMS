@@ -23,7 +23,6 @@
     if (file_exists($configDIR)){
         include ($configDIR);
     }
-    $enableCSSEditor = true;
     // ========================================
 ?>
 
@@ -281,19 +280,19 @@
                                         }
                                     }
 
-                                    if ($enableCSSEditor == true){
-                                        if (CSS_EDITOR_FILE != null){
-                                            $cssFile = "../view/themes/".$currentTheme."/".CSS_EDITOR_FILE;
-                                            if (file_exists($cssFile)){
-                                                echo "<p><a class='pSubmitButton' href='editFile.php?type=CSS&file=$cssFile'>Edit CSS Code</a>
-                                            Edit your website theme's CSS code</p>";
-                                            }
-                                        }else{
-                                            $cssFile = "../view/themes/".$currentTheme."/style.css";
+
+                                    if (CSS_EDITOR_FILE != null){
+                                        $cssFile = "../view/themes/".$currentTheme."/".CSS_EDITOR_FILE;
+                                        if (file_exists($cssFile)){
                                             echo "<p><a class='pSubmitButton' href='editFile.php?type=CSS&file=$cssFile'>Edit CSS Code</a>
-                                            Edit your website theme's CSS code</p>";
+                                        Edit your website theme's CSS code</p>";
                                         }
+                                    }else{
+                                        $cssFile = "../view/themes/".$currentTheme."/style.css";
+                                        echo "<p><a class='pSubmitButton' href='editFile.php?type=CSS&file=$cssFile'>Edit CSS Code</a>
+                                        Edit your website theme's CSS code</p>";
                                     }
+                                    
                                 ?>
                         </div>
                     </div>

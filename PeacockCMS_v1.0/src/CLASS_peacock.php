@@ -2412,9 +2412,7 @@ class Peacock {
 	
 	
 	
-	
-	
-	
+
 	
 	//Legacy old code! =======================================================
 	// -CAN STILL BE USED BUT NOT RECOMMENDED-
@@ -2785,8 +2783,6 @@ class Peacock {
         }
         $db->close();
     }
-
-
 
 
 
