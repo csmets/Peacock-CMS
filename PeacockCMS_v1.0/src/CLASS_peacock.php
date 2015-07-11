@@ -2074,6 +2074,12 @@ class Peacock {
                                 . $get_data['id'] . "'>Page Image</a>";
                         }
                     }
+                    
+                    if ($this->isPageSourceEditingAllow() == true){
+                        echo "<a class='pEditLinkButton' href='editPageSource.php?id="
+                                . $get_data['id'] . "'>Edit Source</a>";
+                    }
+                    
                     if ($get_data['status'] == 'hidden'){
                         echo "<a class='pDisableLinkButton' href='changePageStatus.php?id=" . $get_data['id'] . "&status=active'>Unhide</a>";
                     }
@@ -2155,6 +2161,11 @@ class Peacock {
                                 . $get_data['id'] . "'>Page Image</a>";
                         }
                     }
+                    
+                    if ($this->isPageSourceEditingAllow() == true){
+                        echo "<a class='pEditLinkButton' href='editPageSource.php?id="
+                                . $get_data['id'] . "'>Edit Source</a>";
+                    }
 
                     echo "<a href='deletePageConfirmation.php?id=" . $get_data['id'] ."&page=".strip_tags($get_data['pagename'])."' class='pDeleteLinkButton'>Delete<a>";
 
@@ -2191,6 +2202,10 @@ class Peacock {
                 echo "<a href='".$path."EditPage.php?id=" . $get_data['id'] . "' class='pEditLinkButton'>Edit</a>";
                 if ($get_data['draft'] == 'yes' && $get_data['status'] != 'draft'){
                     echo "<a href='".$path."EditPage.php?id=" . $get_data['id'] . "&draft=yes' class='pEditLinkButton'>Open Draft</a>";
+                }
+                if ($this->isPageSourceEditingAllow() == true){
+                    echo "<a class='pEditLinkButton' href='editPageSource.php?id="
+                            . $get_data['id'] . "'>Edit Source</a>";
                 }
                 echo "<a href='deletePageConfirmation.php?id=" . $get_data['id'] ."&page=".$get_data['pagename']."' class='pDeleteLinkButton'>Delete<a>";
                 echo "<br>";
