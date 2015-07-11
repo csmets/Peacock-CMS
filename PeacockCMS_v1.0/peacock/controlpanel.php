@@ -23,6 +23,7 @@
     if (file_exists($configDIR)){
         include ($configDIR);
     }
+    $enableCSSEditor = true;
     // ========================================
 ?>
 
@@ -117,8 +118,8 @@
                         <div class="pContentBoxContent" name="subpagescontent">
                             <?php $peacock->fetchSubPages("../"); ?>
                             <p align="right">
-	                            <a class="pContentbtn" href="../CreatePage.php?type=subpage">
-	                                Create Sub Page
+                                <a class="pContentbtn" name="CreateSubPageBtn">
+	                            	Create Sub Page
 	                            </a>
                             </p>
                         </div>
@@ -626,6 +627,26 @@
     </div>
         
     
+    <!--  Create Sub Page -->
+    <div id="CreateSubPage" class="pDialogBox" style="width:470px; height:400px;"> 	
+    	<div class="pDialogBoxHeader">
+    		&nbsp;&nbsp;<span class="oi" data-glyph="file"></span>&nbsp;Choose Template
+    	</div>
+
+        <div class="pDialogBoxContent">
+            <div class="FileList">
+        	   <?php $peacock->fetchListOfTemplates('subpage') ?>
+                <a href="../CreatePage.php?type=normal&template=NewTemplate">
+                    <ul>
+                        <li><img src="Images/NewTemplateIcon.png" style="width:60px"></li>
+                        <li>Create New Template</li>
+                    </ul>
+                </a>
+            </div>
+        </div>
+    </div>
+        
+    
     
     
     <!--  Create Custom Page -->
@@ -718,7 +739,7 @@
     	
     	//Dialog Box Actions
     	
-    	$("#dialog-overlay, #ArrangePages, #CustomPage, #NewUser, #AddPlugin, #ErrorMessage, #CreateGroup, #CreatePage").hide();
+    	$("#dialog-overlay, #ArrangePages, #CustomPage, #NewUser, #AddPlugin, #ErrorMessage, #CreateGroup, #CreatePage, #CreateSubPage").hide();
         
         $("a[name=ArrangePagesBtn]").click(function(){
         	$("#dialog-overlay, #ArrangePages").fadeIn("slow")
@@ -734,6 +755,10 @@
         
         $("a[name=CreatePageBtn]").click(function(){
         	$("#dialog-overlay, #CreatePage").fadeIn("slow")
+        });
+        
+        $("a[name=CreateSubPageBtn]").click(function(){
+        	$("#dialog-overlay, #CreateSubPage").fadeIn("slow")
         });
         
         $("a[name=NewUserBtn]").click(function(){
@@ -799,7 +824,7 @@
         });
         
        	$("#dialog-overlay").click(function () {
-       		$("#dialog-overlay, #ArrangePages, #CustomPage, #NewUser, #AddPlugin, #ErrorMessage, #CreateGroup, #CreatePage").fadeOut("fast");
+       		$("#dialog-overlay, #ArrangePages, #CustomPage, #NewUser, #AddPlugin, #ErrorMessage, #CreateGroup, #CreatePage, #CreateSubPage").fadeOut("fast");
        		return false;
        	});
 
