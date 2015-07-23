@@ -489,20 +489,9 @@
     <div id="pFooter">
             <div id="pfooterContainer" class="pWhiteBasicTxt">
                 <span class="pAlternateHeading">PeacockCMS </span><span class="pHightlightTxt"><?php $peacock->peacockVersion() ?></span>
-                <?php
-                    $versionfile = fopen("version.txt", "r") or die("Unable to open file!");
-                    $version = fgets($versionfile);
-                    fclose($versionfile);
-                    /*
-                    $versionOnlineFile = fopen("http://peacockcms.com/version.txt", "r") or die("Unable to open file!");
-                    $versionOnline = fgets($versionOnlineFile);
-                    fclose($versionOnlineFile);
-                    if($versionOnline > $version){
-                        echo "****Newer Version is available!****";
-                    }
-                    */
-                ?>
-                <br>Software cannot be resell.<br><br>
+                <br>PeacockCMS is under the GNU General Public License V3<br>
+                <a class="plinkTxt" href="http://docs.peacockcms.com" target="_blank">View Documentation</a><br>
+                <br>
                 <span class="pHightlightTxt">Problem/Bug please email</span><br>bugs@peacockcms.com<br><br>
                 <span class="pHightlightTxt">Feature Request please email</span><br>feedback@peacockcms.com<br><br>
             </div>
