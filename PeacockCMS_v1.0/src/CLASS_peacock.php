@@ -1479,6 +1479,12 @@ class Peacock {
 					}	
 				}
 				elseif ($edit == false && $this->editorBar_template == false){
+                    
+                    @$templateID = $_GET['template'];
+                    
+                    if ($template != null){
+                        $form .= "<input type='hidden' name='templateID' value='".$templateID."'/>";
+                    }
 
 					if ($pageType == 'blogPost'){
 						$form .= "<input type='hidden' name='subType' value='blogSubmit'/>";

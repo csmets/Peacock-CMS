@@ -52,7 +52,7 @@
             </div>
             <div class="pContentBoxContent">
                 <p class="pbodyTxt">Edit the field below to change the page's code.</p>
-                <div id="code" class="pCodeEditor" contenteditable="true"><pre><code><xmp><?php echo $peacock->getPageContent($pageID); ?></xmp></code></pre></div>
+                <div id="code" class="pCodeEditor" contenteditable="true" onpaste="OnPaste_StripFormatting(this, event);"><pre><code><xmp><?php echo $peacock->getPageContent($pageID); ?></xmp></code></pre></div>
                 <br>
                 <br>
                 <input type='hidden' id="subType" name='subType' value='editPageSource'>
@@ -74,6 +74,32 @@
                 });
             });
         });
+        
+        var _onPaste_StripFormatting_IEPaste = false;
+
+        function OnPaste_StripFormatting(elem, e) {
+
+            if (e.originalEvent && e.originalEvent.clipboardData && e.originalEvent.clipboardData.getData) {
+                e.preventDefault();
+                var text = e.originalEvent.originalEvent.clipboardData.getData('text/plain');
+                window.document.execCommand('insertText', false, text);
+            }
+            else if (e.clipboardData && e.clipboardData.getData) {
+                e.preventDefault();
+                var text = e.clipboardData.getData('text/plain');
+                window.document.execCommand('insertText', false, text);
+            }
+            else if (window.clipboardData && window.clipboardData.getData) {
+                // Stop stack overflow
+                if (!_onPaste_StripFormatting_IEPaste) {
+                    _onPaste_StripFormatting_IEPaste = true;
+                    e.preventDefault();
+                    window.document.execCommand('ms-pasteTextOnly', false);
+                }
+                _onPaste_StripFormatting_IEPaste = false;
+            }
+
+        }
 
     </script>
     

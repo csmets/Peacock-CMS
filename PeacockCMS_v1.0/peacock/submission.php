@@ -479,11 +479,12 @@
             $contentArray = array();
             $contentArray['title'] = $fetchData['pagename'];
             $contentArray['body'] = $fetchData['bodycontent'];
-            $peacock->storeToFile('view/backups/pages/pageBackup-'.$pageId.'.json',$contentArray, 'JSON');
+            //$peacock->storeToFile('view/backups/pages/pageBackup-'.$pageId.'.json',$contentArray, 'JSON');
             //=======================
             
-            $getBodyContents = $_POST['pagecontent'];
-			
+            $getBodyContents = new AddEditables();
+            $getBodyContents = $getBodyContents->sortEditPageContentRegions($pageId, $_POST['pagecontent']);
+
             $draftContentArray = array();
             $draftContentArray['title'] = $pageTitle;
             $draftContentArray['body'] = $getBodyContents;
@@ -726,12 +727,22 @@
 		elseif ($subType == 'submitPage'){
 
             $bodycontent = $_POST['pagecontent'];
-            $SQLbodycontent = addslashes($bodycontent);
 			$pagename = $_POST['pagename'];
 			$isDraft = $_POST['draft'];
 			@$type = $_POST['pageType'];
-			
-			$date = date('Y-m-d H:i:s');
+            @$template = $_POST['templateID'];
+            $date = date('Y-m-d H:i:s');
+            
+            $SQLbodycontent = "";
+            
+            if ($template != null){
+                $sortBodyContent = new AddEditables();
+                $sortedBodyContent = $sortBodyContent->sortEditPageContentRegions($template, $bodycontent);
+                $SQLbodycontent = addslashes($sortedBodyContent);
+            } else {
+                $SQLbodycontent = addslashes($bodycontent);
+            }
+
 			
 			$sqlconnect = new Connectdb;
 			$db = $sqlconnect->connectTo();

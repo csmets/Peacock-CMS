@@ -26,4 +26,10 @@ include_once("src/CLASS_SQLRW.php");
 //Routing Options
 require("src/CLASS_route.php");
 
+//EXTERNAL LIB
+require_once("peacock/extlibs/simple_html_dom.php");
+
+//Adding Editable Regions to Template
+include_once("src/CLASS_addEditables.php");
+
 ?>
