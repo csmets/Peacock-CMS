@@ -542,7 +542,7 @@
         <div class="pDialogBoxContent">
         	<p><?php echo $error; ?></p>
         </div>
-    </div
+    </div>
     
     
     
