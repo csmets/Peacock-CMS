@@ -27,7 +27,7 @@
         <?php $peacock->editorBar(true, $EditPage); ?> 
         
         
-        <div id="SaveContent">
+        <div id="SaveContent" style="padding-top:70px">
         
             <?php
                 echo $peacock->getPageContent($EditPage);   

@@ -42,13 +42,19 @@
 							<!-- Generated Blog Posts / Content -->
 							<!-- Blog Post -->
 							<?php					
-								@$ID = $_GET['id'];							
-								if (!$ID){
-									$ID = $peacock->getLastPostID();
-								}							
-								$MaxDisplayPosts = 10;
-								$PostCount = 1;				
-								while ($PostCount <= $MaxDisplayPosts){
+								$posts = array();
+
+                                @$page = $_GET['page'];							
+                                if (!$page){
+                                    $page = 1;
+                                }							
+                                $limit = 5;
+
+                                $pagination = new BlogPagination($page,$limit);
+
+                                $posts = $pagination->getPosts();
+
+                                foreach ($posts as $ID){
 									if ($peacock->checkPostIDExistsNoDrafts($ID) == TRUE){
 										echo '<div class="blog-content">';
 										echo '<h4><a href="blogPost.php?postID='.$ID.'">'.$peacock->getPostName($ID).'</a></h4>';
@@ -65,17 +71,25 @@
 										echo '<a href="blogPost.php?postID='.$ID.'" class="readMoreBtn">Read More...</a></p>';
 										echo '<hr>';
 										echo '</div>';
-										$ID = $ID - 1;
 									}
-									else{
-										$ID = $ID - 1;
-									}
-									$PostCount = $PostCount + 1;
 								}
 
-                                if ($ID > 0 && $peacock->checkPostIDExistsNoDrafts($ID) == TRUE){
-                                    echo "<center><a class='BlogNavBtn' href='blog.php?id=$ID'>More Entries</a></center>";
+                                echo '<div>
+                                        <ul class="pagination">';
+
+                                $pageCount = $pagination->getTotalPages();
+                                for ($i = 1; $i <= $pageCount; $i++){
+                                    if ($i == $page){
+                                        echo '<li class="active"><a href="blog.php?page='.$i.'">'.$i.'</a></li>';
+                                    } else {
+                                        echo '<li><a href="blog.php?page='.$i.'">'.$i.'</a></li>';
+                                    }
                                 }
+
+                                echo '</ul>
+                                </div>';
+
+                                
 							?>
 						</div>
 					</div>
@@ -97,25 +111,29 @@
 								</div>
 							</div>
                             
-                            <!-- Widgets -->
-							<div class="widgets">
-								<h4>Must Reads</h4>
-								<!-- Widgets Content -->
-								<div class="widgets-content">
-                                    <!-- List -->
-                                    <?php
+                            <?php
 
-                                        $favArray = array();
-                                        $favArray = $favouritePosts->getFavouritePosts();
+                            $favArray = array();
+                            $favArray = $favouritePosts->getFavouritePosts();
+                            
+                            if ($favArray != null){
+                                echo '<!-- Widgets -->
+                                <div class="widgets">
+                                    <h4>Must Reads</h4>
+                                    <!-- Widgets Content -->
+                                    <div class="widgets-content">
+                                        <!-- List -->';
 
-                                        foreach($favArray as $post){
-                                            echo $post;
-                                            echo "<br>";
-                                        }
+                                            foreach($favArray as $post){
+                                                echo $post;
+                                                echo "<br>";
+                                            }
 
-                                    ?>
-								</div>
-							</div>
+
+                                echo'	</div>
+                                </div>';
+                            }
+                            ?>
                             
 							<!-- Widgets -->
 							<div class="widgets">

@@ -22,7 +22,7 @@ function init_Peacock_InlineEditor(){
         var getClass = null;
         
         $("div").click(function(){
-            if ($(this).attr("contentEditable") == "true"){
+            if ($(this).attr("contentEditable") == "true" && $(this).attr("data-toolbar") != "false"){
                 getClass = this.className;
                 var eTop = $("."+getClass).offset().top;
                 var CurrentPos = eTop - $(window).scrollTop();
@@ -99,6 +99,11 @@ function init_Peacock_InlineEditor(){
                 hideToolbar = false;
             }
             
+            if ($(this).attr("contentEditable") == "true" && $(this).attr("data-toolbar") == "false"){
+                hideToolbar = true;
+                $(".toolbar").fadeOut(200);
+            }
+            
             $("#closeMainToolbar").click(function(){
                 hideToolbar = true;
                 $(".toolbar").fadeOut(200);
@@ -134,12 +139,14 @@ function init_Peacock_InlineEditor(){
 
             $("#closeImageURL").click(function(){
                 $(".toolbar-insertImageURL").hide();
+                insertImageToolbar = false;
                 hideToolbar = false;
                 $(".toolbar").fadeIn(200);
             });
 
             $("#closeImageLibrary").click(function(){
                 $(".toolbar-insertImageLibrary").hide();
+                insertImageToolbar = false;
                 hideToolbar = false;
                 $(".toolbar").fadeIn(200);
             });

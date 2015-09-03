@@ -31,6 +31,28 @@ class FavouritePosts{
         echo "</select>";
     }
     
+    public function getFavouritePosts($idOnly = false){
+        $sqlconnect = new Connectdb;
+	    $db = $sqlconnect->connectTo(); 
+        $data = mysqli_query($db,"SELECT * FROM favouritePosts ORDER BY postOrder");
+        
+        $peacock = new Peacock;
+        
+        $favPosts = array();
+        
+        while($get_data = mysqli_fetch_assoc($data)){
+            $postID = $get_data['postID'];
+            if ($idOnly == true){
+                $favPosts[] = $postID; 
+            } else {
+                $postTitle = $peacock->getPostName($postID,true);
+                $favPosts[] = "<a href='blogPost.php?postID=".$postID."'>".$postTitle."</a>";   
+            }
+        }
+        
+        return $favPosts;
+    }
+    
 }
 
 ?>

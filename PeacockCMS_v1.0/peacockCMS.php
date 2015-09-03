@@ -32,4 +32,7 @@ require_once("peacock/extlibs/simple_html_dom.php");
 //Adding Editable Regions to Template
 include_once("src/CLASS_addEditables.php");
 
+//Adding Editable Regions to Template
+include_once("src/CLASS_blogPagination.php");
+
 ?>

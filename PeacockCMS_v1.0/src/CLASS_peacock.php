@@ -315,6 +315,22 @@ class Peacock {
         return $get_data['id'];
         $db->close();
 	}
+    public function getFirstPostID (){
+		$sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,"SELECT * FROM blog");
+        $get_data = mysqli_fetch_assoc($data);
+        return $get_data['id'];
+        $db->close();
+	}
+    public function getLastPageID (){
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,"SELECT * FROM pages ORDER BY pageorder");
+        $get_data = mysqli_fetch_assoc($data);
+        return $get_data['id'];
+        $db->close();
+    }
 	
 	public function getPageData ($id, $ColumnName){
 		$sqlconnect = new Connectdb;
@@ -408,11 +424,15 @@ class Peacock {
                         echo $insertPageName;
                     }
                 }
-                if($get_data['pagetype'] == 'group' && $showGroupPages == true){
+                if($get_data['pagetype'] == 'group' && $showGroupPages == true && $get_data['groupID'] == 0){
                     $pageLink = '';
                     $pageName = $this->siteLinkTags($get_data['pagename'], $stripTags);
                     
-                    $insertPageLink = str_replace("pageLink", "#", $format);
+                    if ($get_data['additional'] != null){
+                         $insertPageLink = str_replace("pageLink", $get_data['additional'], $format);
+                    }else{
+                         $insertPageLink = str_replace("pageLink", "#", $format);
+                    }
 
                     $insertPageName = str_replace("pageName", $pageName, $insertPageLink);
                     
@@ -436,6 +456,17 @@ class Peacock {
                         if ($get_page['groupID'] == $groupID && $get_page['draft'] == 'no' && $get_page['status'] == 'active'){
                             echo "<li>";
                             echo "<a href='".$this->returnPageLink($get_page['pagetype'], $get_page['id'])."'>".$get_page['pagename']."</a>";
+                            if ($get_page['pagetype'] == "group"){
+                                $subGrpID = $get_page['id'];
+                                echo "<ul>";
+                                while($get_subGroupPages = mysqli_fetch_assoc($querydropdown)){
+                                    if ($get_subGroupPages['groupID'] == $subGrpID){
+                                        echo "<li><a href='".$this->returnPageLink($get_subGroupPages['pagetype'], $get_subGroupPages['id'])."'>".$get_subGroupPages['pagename']."</a></li>";
+                                        
+                                    }
+                                }
+                                echo "</ul>";
+                            }
                             echo "</li>";   
                         }
                     }
@@ -689,6 +720,34 @@ class Peacock {
         
         return $posts;
     }
+    
+    public function getImageListArray($folder = null){
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+        $data = mysqli_query($db,"SELECT * FROM images ORDER by imageOrder");
+        
+        $imageArray = array();
+
+        while($get_data = mysqli_fetch_assoc($data)){
+            $imageName = $get_data['imagename'];
+            $imageFile = $get_data['image'];
+            if ($imageName == null){
+                $imageName = $imageFile;   
+            }
+            if ($folder != null){
+                $imageFolder = $get_data['imageFolder'];
+                if ($imageFolder == $folder){
+                    $imageArray[$imageName][0] = $imageName;
+                    $imageArray[$imageName][1] = $imageFile;
+                }
+            } else {
+                $imageArray[$imageName][0] = $imageName;
+                $imageArray[$imageName][1] = $imageName;
+            }
+        }
+        
+        return $imageArray;
+    }
 
 	/*  ===== Get Functions End ========  */
 
@@ -744,6 +803,21 @@ class Peacock {
 			return FALSE;
 		}
 	}
+    
+    public function checkPageIDExists ($id){
+        $sqlconnect = new Connectdb;
+        $db = $sqlconnect->connectTo();
+		$FindData = mysqli_query($db,"SELECT * FROM pages WHERE id='$id'");
+		$get_FindData = mysqli_fetch_assoc($FindData);
+		if ($get_FindData['id'] != null){
+			$db->close();
+			return TRUE;
+		}
+		else {
+			$db->close();
+			return FALSE;
+		}
+    }
 	
 	public function checkImageFolderExist($folder){
 		$sqlconnect = new Connectdb;
@@ -1817,7 +1891,7 @@ class Peacock {
         while ($get_data = mysqli_fetch_assoc($data)){
             if ($get_data['image']){
                 echo "<tr>";
-                echo "<td width='60px'><img src='".$path."image/".$get_data['image']."' height='50'></td>";
+                echo "<td width='60px'><img src='".$path."image/".$get_data['image']."' width='100%'></td>";
                 echo "<td><p class='pbodyTxt'>".$this->getImageName($get_data['id']);
                 echo "<a href='RenameImage.php?id=".$get_data['id']."&file=".$get_data['image']."' class='pEditLinkButton'>Rename</a><a href='deleteImage.php?id=".$get_data['id']."&file=".$get_data['image']."' class='pDeleteLinkButton'>Delete</a>";
                 echo "</p></td>";
@@ -1936,6 +2010,10 @@ class Peacock {
                                 . $get_data['id'] . "'>Page Image</a>";
                         }
                     }
+                    if ($this->isPageSourceEditingAllow() == true){
+                        echo "<a class='pEditLinkButton' href='editPageSource.php?id="
+                                . $get_data['id'] . "'>Edit Source</a>";
+                    }
                     if ($get_data['status'] == 'active'){
                         echo "<a class='pEnableLinkButton' href='PageUpdateStatus.php?id=" . $get_data['id'] . "&status=disable'>Enabled</a>";
                     }else{
@@ -2042,6 +2120,7 @@ class Peacock {
                 
                 elseif ($get_data['pagetype'] == 'group' && $showGroups == true){
                     echo "<a href='editPageGroup.php?grpID=".$get_data['id']."' class='plinkTxt'><b>".$pageName."</b></a>";
+                    echo "<a class='pEditLinkButton' href='setGroupPageLink.php?grp=".$get_data['id']."'>Link To</a>";
                     echo "<br><br>";
                 }
             }
@@ -2184,6 +2263,7 @@ class Peacock {
                 }
                 elseif ($get_data['pagetype'] == 'group'){
                     echo "<a href='editPageGroup.php?grpID=".$get_data['id']."' class='plinkTxt'><b>".$pageName."</b></a>";
+                    echo "<a class='pEditLinkButton' href='setGroupPageLink.php?grp=".$get_data['id']."'>Link To</a>";
                     echo "&nbsp&nbsp";
                 }
                 echo "<a class='pDisableLinkButton' href='ungroupPage.php?id=" . $get_data['id'] . "?grpID=".$ID."'>Ungroup</a>";
@@ -2769,7 +2849,7 @@ class Peacock {
         $db->close();
     }
 
-    public function blogCategoryLinks ($cssStyle,$showPostCount = true){
+    public function blogCategoryLinks ($cssStyle = null,$showPostCount = true){
         $sqlconnect = new Connectdb;
         $db = $sqlconnect->connectTo();
         $data = mysqli_query($db,"SELECT * FROM categories");
@@ -2777,13 +2857,24 @@ class Peacock {
         while ($get_data = mysqli_fetch_assoc($data)){
             if ($this->numOfCategoryPosts($get_data['id']) != 0){
             	if ($showPostCount == true){
-            		echo "<li class='$cssStyle'><a href='blogCategory.php?id="
+                    if ($cssStyle == null){
+                        echo "<li><a href='blogCategory.php?id="
             			. $get_data['id'] . "'>".$get_data['category']."&nbsp;&nbsp;("
             			.$this->numOfCategoryPosts($get_data['id']).")</a></li>";
+                    }else{
+                        echo "<li class='$cssStyle'><a href='blogCategory.php?id="
+            			. $get_data['id'] . "'>".$get_data['category']."&nbsp;&nbsp;("
+            			.$this->numOfCategoryPosts($get_data['id']).")</a></li>";
+                    }
             	}
             	else{
-            		echo "<li class='$cssStyle'><a href='blogCategory.php?id="
+                    if ($cssStyle == null){
+                        echo "<li><a href='blogCategory.php?id="
             		. $get_data['id'] . "'>".$get_data['category']."</a></li>";
+                    }else{
+                        echo "<li class='$cssStyle'><a href='blogCategory.php?id="
+            		. $get_data['id'] . "'>".$get_data['category']."</a></li>";
+                    }
             	}
             }
         }

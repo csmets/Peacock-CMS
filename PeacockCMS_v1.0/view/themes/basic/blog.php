@@ -34,6 +34,7 @@
             <div class="basicContentWrapper">    
                 <?php
                     $LatestPostID = $peacock->getLastPostID();
+                    $analytics->addCount('blog', $LatestPostID);
 
                     if ($LatestPostID != null){
                         

@@ -1403,6 +1403,36 @@
 		//=============================================================
 
 		//=============================================================
+        
+        
+        
+        
+        
+        //=============================================================
+		//   Group Page Link To	...
+		//=============================================================
+		elseif ($subType == 'groupLink'){
+			
+			$pageURL = $_POST['url'];
+            $groupID = $_POST['grpID'];
+            
+            if ($groupID != null){
+                
+                $sqlconnect = new Connectdb;
+                $db = $sqlconnect->connectTo();
+                mysqli_query($db,"UPDATE pages SET additional='$pageURL' WHERE id='$groupID'");
+                 header("location:controlpanel.php");
+                
+            } else{
+                echo "NO GROUP ID GIVEN";   
+            }
+			
+		}
+		//=============================================================
+
+		//=============================================================
+        
+        
 
 		
 		

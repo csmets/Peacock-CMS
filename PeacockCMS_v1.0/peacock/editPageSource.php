@@ -13,9 +13,6 @@
 
     $pageID = $_GET['id'];
 
-
-    $highlighter = "language-markup";
-
 ?>
 
 <html>
@@ -27,6 +24,7 @@
     <link href="css/PeacockStyles.css" rel="stylesheet" type="text/css" />   
     <?php $peacock->removePageMargins(); ?>
     <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/tidyCode.js"></script>
 </head>
 
 <body class="backgroundColor">
@@ -52,7 +50,7 @@
             </div>
             <div class="pContentBoxContent">
                 <p class="pbodyTxt">Edit the field below to change the page's code.</p>
-                <div id="code" class="pCodeEditor" contenteditable="true" onpaste="OnPaste_StripFormatting(this, event);"><pre><code><xmp><?php echo $peacock->getPageContent($pageID); ?></xmp></code></pre></div>
+                <div id="code" class="pCodeEditor" contenteditable="true" onpaste="OnPaste_StripFormatting(this, event);"></div>
                 <br>
                 <br>
                 <input type='hidden' id="subType" name='subType' value='editPageSource'>
@@ -63,9 +61,22 @@
         
     </div>
     
+    <div id="dirtyCode" style="display:none"><?php echo $peacock->getPageContent($pageID); ?></div>
+    
+    
     <script>
+
         $(document).ready(function(){
+            
+            var runOnce = false;
+            
+            if (runOnce == false){
+                tidyCode($("#dirtyCode").html());
+                runOnce = true;
+            }
+            
             $("#submit").click(function(){
+                
                 var code = $("#code").text();
                 var subType = $("#subType").val();
                 var id = $("#id").val();

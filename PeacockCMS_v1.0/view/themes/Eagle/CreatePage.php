@@ -26,7 +26,7 @@
             $peacock->runPeacockEditor(true, 0)
         ?> 
         
-        <div id="SaveContent" class="Template-Editable" style="min-height:200px;">
+        <div id="SaveContent" class="Template-Editable" style="min-height:200px;padding-top:90px">
             <?php
                 $peacock->getTemplateContent();   
             ?>

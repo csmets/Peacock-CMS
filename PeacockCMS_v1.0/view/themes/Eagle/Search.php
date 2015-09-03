@@ -4,6 +4,7 @@
 	$Pageid = 2;
 	$search = new Search;
 	$search->linkTo = "blogPost.php?postID=";
+    $result = array();
 	$result = $search->searchForResult($query); 
 
 ?>
@@ -45,8 +46,20 @@
 							<?php
 
 								//Search Results
-
-								echo $result;
+                                if ($result != null){
+                                    
+                                    foreach ($result as $post){
+                                        echo '<ul>';
+                                        echo '<a href="blogPost.php?postID='.$post.'">';
+                                        echo '<li>'.$peacock->getPostName($post).'</li>';
+                                        echo '<li>'.$peacock->limitText($peacock->getPostContent($post),200).'</li>';
+                                        echo '</a>';
+                                        echo '</ul>';
+                                    }
+        
+                                } else{
+                                    echo "No Search Results.";   
+                                }
 
 
 							?>

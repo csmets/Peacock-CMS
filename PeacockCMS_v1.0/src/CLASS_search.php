@@ -11,8 +11,6 @@
 		public $data_1 = "posttitle";
 		public $data_2 = "postcontent";
 		public $data_3 = "id";
-		public $useBtn = false;
-		public $linkTo = "blogPost.php?id=";
 		public $showDrafts = false;
 		private $foundResults = array();
         public $searchMaxChar = 2;
@@ -38,15 +36,15 @@
                 */
 				$query = strtolower($query);
 
-				$result = $this->searchThroughTitles($query);//Look for relevant titles to search first.
-				$result .= $this->searchHashTags($query); // Then look for hash tag results.
-				
-				if ($result != null){
-					return $result;
-				}else{
-					return "No Search Results Found";
-				}
+				$result_titles = array();
+                $result_tags = array();
 
+				$result_titles = $this->searchThroughTitles($query);//Look for relevant titles to search first.
+				$result_tags = $this->searchHashTags($query); // Then look for hash tag results.
+                
+                $result = array_merge($result_titles, $result_tags);
+				
+				return $result;
 			}
 			else{
 				//Direct to search page with no results.
@@ -63,7 +61,7 @@
                 $sql = "SELECT * FROM ".$this->table." WHERE posttitle LIKE '%".$query."%'";
                 $data = mysqli_query($db,$sql);
 
-                $result = "";
+                $result = array();
 
                 $peacock = new Peacock;
 
@@ -73,28 +71,7 @@
 
                         if($get_data['draft'] == 'no'){
 
-                            $StripTags = strip_tags($get_data[$this->data_2 ]);	
-                            $LimitBody = $peacock->removeHashTags(substr($StripTags, 0, 300));
-
-                            $StripTitle = strip_tags($get_data[$this->data_1]);
-
-                            if ($this->useBtn == false){
-                                if ($this->linkTo != null){
-                                    $result .= "<a href='$this->linkTo".$get_data[$this->data_3]."'>
-                                        <ul><li><h1>".$StripTitle."</h1></li>
-                                            <li>".$LimitBody."...</li></ul>
-                                        </a>";
-                                }else{
-                                    $result .= "<ul><li><h1>".$StripTitle."</h1>/li><li>".$LimitBody."...</li></ul>";
-                                }
-                            }
-                            else{
-                                if ($this->linkTo != null){
-                                    $result .= "<ul><li><h1>".$StripTitle."</h1></li><li>".$LimitBody."...</li></ul>";
-                                }else{
-                                    $result .= "<ul><li><h1>".$StripTitle."</h1></li><li>".$LimitBody."...</li></ul>";
-                                }
-                            }
+                            $result[$get_data['id']] = $get_data['id'];
 
                             $this->foundResults[$get_data[$this->data_3]] = 'found';
 
@@ -102,28 +79,8 @@
 
                     }
                     elseif ($showDrafts == true){
-                        $StripTags = strip_tags($get_data[$this->data_2 ]);	
-                        $LimitBody = $peacock->removeHashTags(substr($StripTags, 0, 300));
-
-                        $StripTitle = strip_tags($get_data[$this->data_1]);
-
-                        if ($this->useBtn == false){
-                            if ($this->linkTo != null){
-                                $result .= "<a href='$this->linkTo".$get_data[$this->data_3]."'>
-                                    <ul><li><h1>".$StripTitle."</h1></li>
-                                        <li>".$LimitBody."...</li></ul>
-                                    </a>";
-                            }else{
-                                $result .= "<ul><li><h1>".$StripTitle."</h1>/li><li>".$LimitBody."...</li></ul>";
-                            }
-                        }
-                        else{
-                            if ($this->linkTo != null){
-                                $result .= "<ul><li><h1>".$StripTitle."</h1></li><li>".$LimitBody."...</li></ul>";
-                            }else{
-                                $result .= "<ul><li><h1>".$StripTitle."</h1></li><li>".$LimitBody."...</li></ul>";
-                            }
-                        }
+                        
+                        $result[$get_data['id']] = $get_data['id'];
 
                         $this->foundResults[$get_data[$this->data_3]] = 'found';
                     }
@@ -150,7 +107,7 @@
 
 	    	$GatherTags = array();
 
-	    	$result = "";
+	    	$result = array();
 
 	    	while ($get_data = mysqli_fetch_assoc($data)){
 
@@ -178,28 +135,7 @@
 
 								$ID = $tagResults;
 
-								$StripTags = strip_tags($peacock->getPostContent($ID, false));	
-								$LimitBody = $peacock->removeHashTags(substr($StripTags, 0, 300));
-
-								$title = $peacock->getPostName($ID, true);
-								
-								if ($this->useBtn == false){
-									if ($this->linkTo != null){
-										$result .= "<a href='$this->linkTo".$ID."'>
-											<ul><li><h1>".$title."</h1></li>
-												<li>".$LimitBody."...</li></ul>
-											</a>";
-									}else{
-										$result .= "<ul><li><h1>".$title."</h1>/li><li>".$LimitBody."...</li></ul>";
-									}
-								}
-								else{
-									if ($this->linkTo != null){
-										$result .= "<ul><li><h1>".$title."</h1></li><li>".$LimitBody."...</li></ul>";
-									}else{
-										$result .= "<ul><li><h1>".$title."</h1></li><li>".$LimitBody."...</li></ul>";
-									}
-								}
+								$result[$get_data['id']] = $ID;
 
 								$this->foundResults[$ID] = 'found';
 							}

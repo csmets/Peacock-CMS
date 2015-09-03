@@ -4,6 +4,7 @@
 	
 	$search = new Search;
 	$search->linkTo = "blogPost.php?postID=";
+    $result = array();
 	$result = $search->searchForResult($query); 
 
 ?>
@@ -17,7 +18,7 @@
 	<head>
 		<meta charset="utf-8">
 		<!-- Title here -->
-		<title><?php echo $peacock->getSiteName() . " | " . $peacock->getPageName($Pageid, true); ?></title>
+		<title><?php echo $peacock->getSiteName() . " | Search" ?></title>
 		<!-- Description, Keywords and Author -->
 		<meta name="author" content="PeacockCMS">
 		
@@ -59,13 +60,18 @@
 							<div class="searchResults">
 
 								<h2>Search Results:</h2>
+                                <br>
 
 							<?php
 
-								//Search Results
-
-								echo $result;
-
+								if ($result != null){
+                                    foreach ($result as $ID){
+                                        echo "<a href='blogPost.php?postID=$ID'><h3 style='color:#3498db'>".$peacock->getPostName($ID,true)."</h3></a>";
+										echo $peacock->limitText($peacock->getPostContent($ID, FALSE),150,true)."...<br>";   
+                                    }
+                                }else{
+                                    echo "No Search Results";   
+                                }
 
 							?>
 
