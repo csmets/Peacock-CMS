@@ -1,7 +1,7 @@
 # Peacock CMS
 Peacock CMS is created by [Clyde Smets](http://clydesmets.com). It’s a flexible PHP/MYSQL content management system that helps developers and designers create beautiful websites with a simple but powerful back-end. Which allows the not-so-tech-savy client to be able to edit their website themselves.
 
-![alt tag](http://peacockcms.com/git/img/banner.png)
+![alt tag](http://peacockcms.com/banner.png)
 
 Download a Zip copy of the current source and completely change the code to how you want it or Fork it and make changes that can help all of us.
 
