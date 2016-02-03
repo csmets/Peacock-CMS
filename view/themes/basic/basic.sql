@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
 `id` int(11) NOT NULL,
   `category` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT 'none',
-  `icon` varchar(500) COLLATE utf8_unicode_ci NOT NULL
+  `icon` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `categoryOrder` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `categories` (`id`, `category`, `icon`) VALUES
