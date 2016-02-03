@@ -20,6 +20,7 @@ class ViewImages extends PeacockUI{
     $images = $Peacock->fetchImagesArray();
     $folder = $_GET['folder'];
     $imageList = "";
+    $checkNumberOfImages = 0;
     foreach ($images as $image){
       if ($image['folder'] == $folder){
         $file = $image['image'];
@@ -40,8 +41,14 @@ class ViewImages extends PeacockUI{
   				.$image['folder']
   				."'>Rename</a></li>
           </ul>";
+          $checkNumberOfImages++;
       }
     }
+
+    if ($checkNumberOfImages == 0 || $imageList == ""){
+      $imageList = "<h4>Empty folder.</h4>";
+    }
+
     $array['content-title'] = "<a href='viewImageFolders.php'><i class='fa fa-arrow-left'></i></a> | Image Folders";
     $array['content-body'] = "
 
