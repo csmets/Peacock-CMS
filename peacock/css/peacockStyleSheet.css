@@ -116,6 +116,20 @@ input[type=checkbox]:checked + label {
   text-decoration: none !important;
   cursor: pointer;
 }
+.deleteBtn {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  border: 0;
+  padding: 11px;
+  background-color: #EF4836;
+  color: white !important;
+}
+.deleteBtn:hover {
+  background-color: #f79e94;
+  text-decoration: none !important;
+  cursor: pointer;
+}
 .siteImage {
   max-width: 100%;
   margin-bottom: 5px;
