@@ -10,8 +10,8 @@
     $username = $_SESSION['username'];
     $peacock = new peacock;
     $peacock->CheckUser($username);
-	
-	
+
+
 	if (isset($_FILES['files'])){
 
 		$numOfImages = 0;
@@ -32,15 +32,15 @@
 		    $maxFileSize = 6291456;
 
 		    $temp_name = $_FILES['files']['tmp_name'][$count];
-			
+
 			$folder = $_POST['folder'];
 
 		    if(isset($name)){
 		        if(!empty($name)){
-		            
+
 		            if (($extention == 'jpg' || $extention == 'jpeg' || $extention == 'png' || $extention == 'gif') && ($type=='image/jpeg'||$type=='image/png'||$type=='image/gif')){
 		                if ($size<=$maxFileSize){
-		                    $location = SITE_PATH.'image/';
+		                    $location = '../view/image/';
 		                    $sqlconnect = new Connectdb;
 		                    $db = $sqlconnect->connectTo();
 							if ($folder != null){
@@ -74,10 +74,10 @@
 		                echo $UploadErrorMessage;
 		            }
 		        }
-		        
-		        
+
+
 		    }
-		
+
 	}
 }
 else{
@@ -86,6 +86,6 @@ else{
 	}else{
 		$UploadErrorMessage = "No file selected";
 	}
-    echo $UploadErrorMessage;  
+    echo $UploadErrorMessage;
 }
 ?>

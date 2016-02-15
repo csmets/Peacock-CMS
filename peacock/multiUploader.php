@@ -12,8 +12,8 @@
     $peacock->CheckUser($username);
 
     $exceedCount = 0;
-	
-	
+
+
 	if (isset($_FILES['files'])){
 
 		$numOfImages = 0;
@@ -34,15 +34,15 @@
 		    $maxFileSize = 6291456;
 
 		    $temp_name = $_FILES['files']['tmp_name'][$count];
-			
+
 			$folder = $_POST['folder'];
 
 		    if(isset($name)){
 		        if(!empty($name)){
-		            
+
 		            if (($extention == 'jpg' || $extention == 'jpeg' || $extention == 'png' || $extention == 'gif') && ($type=='image/jpeg'||$type=='image/png'||$type=='image/gif')){
 		                if ($size<=$maxFileSize){
-		                    $location = SITE_PATH.'image/';
+		                    $location = '../view/image/';
 		                    $sqlconnect = new Connectdb;
 		                    $db = $sqlconnect->connectTo();
 							if ($folder != null){
@@ -66,7 +66,7 @@
                             }else{
                                 $message = "Image file exceeds 6mb";
                             }
-                            
+
 		                	if ($folder != null){
 		                		$UploadErrorMessage = "location:viewImages.php?folder=$folder&message=".$message;
 		                	}else{
@@ -84,18 +84,18 @@
 		                header($UploadErrorMessage);
 		            }
 		        }
-		        
-		        
+
+
 		    }
-		
+
 	}
 }
 else{
 	if ($folder != null){
-		$UploadErrorMessage = "location:viewImages.php?folder=$folder&message=No file selected"; 
+		$UploadErrorMessage = "location:viewImages.php?folder=$folder&message=No file selected";
 	}else{
-		$UploadErrorMessage = "location:dashboard.php?message=No file selected"; 
+		$UploadErrorMessage = "location:dashboard.php?message=No file selected";
 	}
-    header($UploadErrorMessage);   
+    header($UploadErrorMessage);
 }
 ?>
