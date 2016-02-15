@@ -59,6 +59,9 @@ class ViewImages extends PeacockUI{
         <li id='arrangeImagesBtn'><i class='fa fa-random'></i> Arrange Images</li>
         <li id='moveImagesBtn'><i class='fa fa-random'></i> Move Images</li>
       </ul>
+      <form method='post' action='multiUploader.php' enctype='multipart/form-data' style='display:inline-block'>
+          Upload image to folder [jpg/png/gif] <input class='inputFile' id='image' data-multiple-caption='{count} images selected' type='file' name='files[]' multiple='multiple' min='1' max='9999'><label for='image'><span>Select Images</span></label><input type='hidden' name='folder' value='$folder'><input type='submit' value='Upload' class='submitBtn'/>
+      </form>
     </div>
 
     <div class='FolderList'>
@@ -350,5 +353,27 @@ $folder = $_GET['folder'];
 
 
 
+
 	});
+
+  var inputs = document.querySelectorAll( '.inputFile' );
+  Array.prototype.forEach.call( inputs, function( input )
+  {
+  var label	 = input.nextElementSibling,
+    labelVal = label.innerHTML;
+
+  input.addEventListener( 'change', function( e )
+  {
+    var fileName = '';
+    if( this.files && this.files.length > 1 )
+      fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+    else
+      fileName = e.target.value.split( '\\' ).pop();
+
+    if( fileName )
+      label.querySelector( 'span' ).innerHTML = fileName;
+    else
+      label.innerHTML = labelVal;
+  });
+  });
 </script>
