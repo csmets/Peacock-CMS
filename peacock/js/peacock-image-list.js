@@ -6,7 +6,14 @@ $(document).ready(function(){
 
 
   $.get("pEditorImages.php",{folder : "Uncategorised"},function(data){
-     $(".imageSelect").html(data);
+    var existingImage = $(".existingImage").val();
+    if (existingImage !== null){
+      var append = "<option value='"+existingImage+"'>"+existingImage+"</option>";
+      $(".imageSelect").html(append+data);
+    }else{
+      $(".imageSelect").html(data);
+    }
+
   },"html");
 
   $(".imageFolders").change(function(){
