@@ -7,7 +7,7 @@ $(document).ready(function(){
 
   $.get("pEditorImages.php",{folder : "Uncategorised"},function(data){
     var existingImage = $(".existingImage").val();
-    if (existingImage !== null){
+    if (existingImage !== null && existingImage === "" && existingImage === undefined){
       var append = "<option value='"+existingImage+"'>"+existingImage+"</option>";
       $(".imageSelect").html(append+data);
     }else{
