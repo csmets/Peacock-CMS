@@ -540,7 +540,7 @@
           <div class="row pages">
             <div class="col-xs-12">5 most recent images uploaded<br><br></div>
             <?php
-              $images = $peacock->fetchImagesArray(5);
+              $images = $peacock->fetchImagesArray(5,'newest');
               foreach($images as $image){
                 $name = $image['name'];
                 if ($name == null){

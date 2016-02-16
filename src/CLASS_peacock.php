@@ -1475,8 +1475,14 @@ class Peacock {
     }
 
 
-    public function fetchImagesArray($limit = 0){
-      $query = "SELECT * FROM images ORDER BY imageOrder";
+    public function fetchImagesArray($limit = 0,$arrangeOrder = 'imageOrder'){
+      if ($arrangeOrder == 'imageOrder'){
+        $query = "SELECT * FROM images ORDER BY imageOrder";
+      }elseif($arrangeOrder == 'newest'){
+        $query = "SELECT * FROM images ORDER BY id DESC";
+      }else{
+        $query = "SELECT * FROM images";
+      }
       $dbq = new DatabaseConnection();
       $get_data = $dbq->fetch($query);
       $array = array();
