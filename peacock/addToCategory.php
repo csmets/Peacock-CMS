@@ -4,79 +4,51 @@
  * Peacock CMS is under the GNU - General Public License V3.
  */
 
-    session_start();
-    include('initPeacock.php');
-    $username = $_SESSION['username'];
-    $peacock = new Peacock;
-    $peacock->checkUser($username);
-?>
+session_start();
+include('initPeacock.php');
 
-<html>
+class AddToCategory extends PeacockUI{
+  public function title(){
+    return "Add to category";
+  }
 
-<head>
-    <title>Peacock>Dashboard | Add to Category</title>
-    <link href="css/PeacockStyles.css" rel="stylesheet" type="text/css" />   
-    <link href="font/css/open-iconic.css" rel="stylesheet">
-    <?php $peacock->removePageMargins(); ?>
-    
-</head>
+  public function content(){
 
-<body class="backgroundColor">
+    $postID = $_GET['post'];
 
-    <?php include("includes/header.php"); ?>
-    
-    <div id="pContentWrapper">
-        
-        <center>
-        <table width='100%'>
-            
-            <tr>
-                <td width='60%' align='left'><p class='ph2'><?php $peacock->peacockVersion() ?></p></td>
-                <td align='left'></td>
-            </tr>
-            <tr>
-                <td width='60%' align='left'><br><a href='dashboard.php' class='plinkTxt'>Return to Control Panel</a></td>
-                <td align='left'></td>
-            </tr>
-        </table>
-        </center>
-        
-        <!-- Pages Box -->
-        <div class="pContentBox">
-            <div class="pContentBoxHeader">
-                &nbsp;&nbsp;<span class="oi" data-glyph="folder"></span>&nbsp;
-                <a class="ph1">ADD TO CATEGORY</a>
-            </div>
-            <div class="pContentBoxContent">
-                <?php
-                	$postID = $_GET['id'];
-                    $postName = $_GET['page'];
-                    echo "<form action='submission.php' method='post'>";
-                    echo "Add post <i>".$postName."</i> to: ";
-                    echo "<select name='category'>";
-                        $sqlconnect = new Connectdb;
-                        $db = $sqlconnect->connectTo();
-                        $data = mysqli_query($db,"SELECT * FROM categories");
+    $Peacock = new Peacock;
+    $postName = $Peacock->getPostName($postID);
 
-                        while ($get_data = mysqli_fetch_assoc($data)){
-                            echo "<option value='".$get_data['id']."'>".$get_data['category']."</option>";
-                        }
-                
-                
-                    echo "</select>";
-					echo "<input type='hidden' name='id' value='".$postID."'>";
-                    echo "<input type='hidden' name='subType' value='addToCategory'>";
-                    echo "<input type='submit' value='Add'>";
-                    echo '</form>';
-                    $db->close();
-                ?>
-            </div>
+    $array['content-title'] = "<a href='dashboard.php'><i class='fa fa-arrow-left'></i></a> | Add '$postName' to category";
+
+    $list = "";
+    $listOfCategories = $Peacock->fetchCategories();
+
+    foreach($listOfCategories as $category){
+      $list .= "<option value='".$category['id']."'>".$category['name']."</option>";
+    }
+
+    $array['content-body'] = "
+      <div class='row'>
+        <div class='col-md-4'>Add to category:</div>
+        <div class='col-md-8'>
+          <form action='submission.php' method='POST'>
+            <select name='category'>
+              $list
+            </select>
+            <input type='hidden' name='subType' value='addToCategory'>
+            <input type='hidden' name='id' value='".$postID."'>
+            <input type='submit' class='submitBtn' value='ADD' />
+          </form>
         </div>
-        
-    </div>
-    
-</body>
+      </div>
+    ";
 
+    return $array;
+  }
+}
 
+$AddToCategory = new AddToCategory;
+echo $AddToCategory->build();
 
-</html>
+?>

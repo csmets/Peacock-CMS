@@ -365,6 +365,7 @@
                           }
                         }
                         echo '<a href="../EditPost/'.$post['id'].'"><i class="fa fa-pencil-square-o"></i></a>';
+                        echo '<a href="addToCategory.php?post='.$post['id'].'" id="addToCategoryBtn"><i class="fa fa-book"></i></a>';
                         echo '<a class="delete" href="deletePostConfirmation.php?id='
                         . $post['id'] .'&post='.$post['title'].'"><i class="fa fa-trash-o"></i></a>';
                       echo '</span>';
