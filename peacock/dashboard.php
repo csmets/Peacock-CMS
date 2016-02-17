@@ -231,7 +231,7 @@
                             echo "<a class='pEditLinkButton' href='editPageSource.php?id="
                                     . $page['id'] . "'><i class='fa fa-file-code-o'></i></a>";
                         }
-                        echo '<a class="delete" href="deletePageConfirmation.php?id=' . $page['id'] .'&page='.$page['pagename'].'"><i class="fa fa-trash-o"></i></a>';
+                        echo '<a class="delete" href="deletePageConfirmation.php?id=' . $page['id'] .'&page='.strip_tags($page['pagename']).'"><i class="fa fa-trash-o"></i></a>';
                       echo '</span>';
                     }
                     if ($page['type'] == 'group' && $usePageGroups == true){
@@ -309,7 +309,7 @@
                         echo "<a class='pEditLinkButton' href='editPageSource.php?id="
                                 . $page['id'] . "'>Edit Source</a>";
                     }
-                    echo '<a class="delete" href="deletePageConfirmation.php?id=' . $page['id'] .'&page='.$page['pagename'].'"><i class="fa fa-trash-o"></i></a>';
+                    echo '<a class="delete" href="deletePageConfirmation.php?id=' . $page['id'] .'&page='.strip_tags($page['pagename']).'"><i class="fa fa-trash-o"></i></a>';
                   echo '</span>';
                   echo '</div>';
                 }
@@ -367,7 +367,7 @@
                         echo '<a href="../EditPost/'.$post['id'].'"><i class="fa fa-pencil-square-o"></i></a>';
                         echo '<a href="addToCategory.php?post='.$post['id'].'" id="addToCategoryBtn"><i class="fa fa-book"></i></a>';
                         echo '<a class="delete" href="deletePostConfirmation.php?id='
-                        . $post['id'] .'&post='.$post['title'].'"><i class="fa fa-trash-o"></i></a>';
+                        . $post['id'] .'&post='.strip_tags($post['title']).'"><i class="fa fa-trash-o"></i></a>';
                       echo '</span>';
                     echo '</div>';
                     $count++;
