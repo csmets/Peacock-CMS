@@ -61,7 +61,7 @@
 
         <div id="SaveContent" class="Template-Editable">
             <?php
-                $peacock->getTemplateContent();
+                echo $peacock->getTemplateContent();
             ?>
         </div>
 

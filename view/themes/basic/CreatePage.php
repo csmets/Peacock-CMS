@@ -31,7 +31,7 @@
             <div class="basicContentWrapper">
                 <div id="SaveContent" class="Template-Editable" style="min-height:200px;">
                     <?php
-                        $peacock->getTemplateContent();
+                        echo $peacock->getTemplateContent();
                     ?>
                 </div>
             </div>

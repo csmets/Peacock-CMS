@@ -1461,6 +1461,9 @@ class Peacock {
                     <a href="/CreatePage/'.$type.'/'.$data['id'].'/yes">
                       <i class="fa fa-pencil-square-o"></i>
                     </a>
+                    <a href="editTemplateSource.php?id='.$data['id'].'">
+                      <i class="fa fa-file-code-o"></i>
+                    </a>
                     <a class="delete" href="deleteTemplate.php?template='.$data['id'].'">
                       <i class="fa fa-trash-o"></i>
                     </a>
@@ -1471,14 +1474,19 @@ class Peacock {
         print $html;
     }
 
-    public function getTemplateContent(){
-        @$template = $_GET['template'];
+    public function getTemplateContent($id = null){
+        if ($id != null){
+          $template = $id;
+        }else{
+          @$template = $_GET['template'];
+        }
+
         if ($template != 'blankPage' || $template != 'NewTemplate'){
           $query = "SELECT * FROM templates WHERE id='$template'";
           $dbq = new DatabaseConnection();
           $get_data = $dbq->fetch($query,1);
           if ($get_data != null){
-              echo stripslashes($get_data['templateContent']);
+              return stripslashes($get_data['templateContent']);
           }
         }
     }

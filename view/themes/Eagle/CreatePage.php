@@ -29,7 +29,7 @@
 
         <div id="SaveContent" class="Template-Editable" style="min-height:200px;padding-top:90px">
             <?php
-                $peacock->getTemplateContent();
+                echo $peacock->getTemplateContent();
             ?>
         </div>
 
