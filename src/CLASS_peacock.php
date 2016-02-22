@@ -22,6 +22,22 @@ class Peacock {
 
 
     /*  ===== Get Functions Start ========  */
+  public function getBlogPosts($limit = 0,$removeDrafts = true){
+    $DB = new DatabaseConnection;
+    if ($removeDrafts == true){
+      $query = "SELECT * FROM blog WHERE draft='no' ORDER BY id DESC";
+    }else{
+      $query = "SELECT * FROM blog ORDER BY id DESC";
+    }
+
+    if ($limit !== 0){
+      $posts = $DB->fetch($query,$limit);
+    }else{
+      $posts = $DB->fetch($query);
+    }
+
+    return $posts;
+  }
 
 	public function getPostContent ($id, $incDraft = false, $showTags = false){
     $query = "SELECT * FROM blog WHERE id='$id'";
