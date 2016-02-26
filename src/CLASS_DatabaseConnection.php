@@ -25,12 +25,14 @@
       $data = $this->query($query);
       $rows = mysqli_num_rows($data);
       $results = null;
-      if($limit > 1 && $rows > 1){
+      if($limit >= 1 && $rows > 1){
         $results = array();
         $count = 0;
-        while($fetch = mysqli_fetch_assoc($data) && $count < $limit){
-          $results[] = $fetch;
-          $count++;
+        while($fetch = mysqli_fetch_assoc($data)){
+          if ($count < $limit){
+            $results[] = $fetch;
+            $count++;
+          }
         }
       }
       elseif ($rows > 1 || $limit == 0){
