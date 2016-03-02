@@ -42,36 +42,43 @@
 							<?php
 								$posts = array();
 
-                                @$page = $_GET['page'];
-                                if (!$page){
-                                    $page = 1;
-                                }
-                                $limit = 5;
+                @$page = $_GET['page'];
+                if (!$page){
+                    $page = 1;
+                }
+                $limit = 5;
 
-                                $pagination = new BlogPagination($page,$limit);
+                $pagination = new BlogPagination($page,$limit);
 
-                                $posts = $pagination->getPosts();
+                $posts = $pagination->getPosts();
 
 								foreach ($posts as $ID){
 									if ($peacock->checkPostIDExistsNoDrafts($ID) == TRUE){
+
+										$limit = $peacock->getPostCharLimit($ID);
+
+										if ($limit == 0){
+											$limit = 600;
+										}
+
 										echo '<div class="blog-content">';
-										echo '<h4><a href="/blogPost/'.$ID.'">'.$peacock->getPostName($ID).'</a></h4>';
-										echo '<div class="blog-meta">';
-										echo '<i class="fa fa-calendar calender"></i> '
-                                            .substr($peacock->getPostDate($ID, false), 0, 10).'&nbsp;&nbsp;';
-										echo '<i class="fa fa-user user"></i> '
-                                            .$peacock->getPostAuthorName($peacock->getPostAuthor($ID,false)).'&nbsp;&nbsp;';
-										echo '<i class="fa fa-folder-open folder"></i> '.$peacock->getPostCategory($ID, false);
-										echo '</div>';
-										echo substr($peacock->getPostContent($ID, FALSE), 0, 600);
-										echo '<p>&nbsp;</p>';
-										echo '<a href="/blogPost/'.$ID.'" class="btn btn-sm btn-danger">Read More...</a>';
-										echo '<hr>';
+											echo '<h4><a href="/blogPost/'.$ID.'">'.$peacock->getPostName($ID).'</a></h4>';
+											echo '<div class="blog-meta">';
+											echo '<i class="fa fa-calendar calender"></i> '
+	                                            .substr($peacock->getPostDate($ID, false), 0, 10).'&nbsp;&nbsp;';
+											echo '<i class="fa fa-user user"></i> '
+	                                            .$peacock->getPostAuthorName($peacock->getPostAuthor($ID,false)).'&nbsp;&nbsp;';
+											echo '<i class="fa fa-folder-open folder"></i> '.$peacock->getPostCategory($ID, false);
+											echo '</div>';
+											echo substr($peacock->getPostContent($ID, FALSE), 0, $limit);
+											echo '<p>&nbsp;</p>';
+											echo '<a href="/blogPost/'.$ID.'" class="btn btn-sm btn-danger">Read More...</a>';
+											echo '<hr>';
 										echo '</div>';
 									}
 								}
 
-                                echo '<div >
+                                echo '<div>
                                         <ul class="pagination">';
 
                                 $pageCount = $pagination->getTotalPages();
@@ -84,7 +91,7 @@
                                 }
 
                                 echo '</ul>
-                                </div>';
+                                </div></div>';
 
 							?>
 						</div>
