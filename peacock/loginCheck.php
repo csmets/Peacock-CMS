@@ -40,7 +40,7 @@ if ($username && $password){
 		}
 		else{
 			$errorMessage = "Username or Password is incorrect";
-	    header("location:../plogin.php?err=$errorMessage");
+	    header("location:/plogin/$errorMessage");
 		}
 
 
@@ -48,7 +48,7 @@ if ($username && $password){
 }
 else{
 	$errorMessage = "Please enter your Username / Password";
-	header("location:/plogin.php?err=$errorMessage");
+	header("location:/plogin/$errorMessage");
 }
 
 ?>

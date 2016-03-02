@@ -15,7 +15,7 @@
 
     <body>
         <center>
-        <form action="./peacock/loginCheck.php" method="post" class="basic-grey">
+        <form action="/peacock/loginCheck.php" method="post" class="basic-grey">
             <img src="/peacock/Images/PeacockCMS_Logo.png" width="180" height="200"><br><br>
             <?php
                 if ($errorMessage != null){
