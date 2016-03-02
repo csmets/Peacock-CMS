@@ -1496,6 +1496,48 @@
 
 
 
+		//=============================================================
+		//   Set Blog post character limit
+		//=============================================================
+		elseif ($subType == 'setCharLimit'){
+
+			$postID = $_POST['id'];
+			$charLimit = $_POST['charLimit'];
+			$file = $_POST['file'];
+
+			if (file_exists($file) == true){
+				$json = file_get_contents($file);
+				$tempArray = json_decode($json, true);
+				if (gettype($tempArray) == "array"){
+					$newArray = array();
+					$count = 0;
+					foreach ($tempArray as $key => $value){
+						if ($value['id'] !=  $postID){
+							$newArray[$count]['id'] = $value['id'];
+							$newArray[$count]['limit'] = $value['limit'];
+						}
+					}
+					$data['id'] = $postID;
+					$data['limit'] = $charLimit;
+					array_push($newArray, $data);
+					$jsonData = json_encode($newArray);
+				}else{
+					$data[0]['id'] = $postID;
+					$data[0]['limit'] = $charLimit;
+					$jsonData = json_encode($data);
+				}
+				file_put_contents($file, $jsonData);
+				header("location:dashboard.php");
+			}
+
+		}
+		//=============================================================
+
+		//=============================================================
+
+
+
+
 
 
 /*

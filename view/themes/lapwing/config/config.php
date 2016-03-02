@@ -15,6 +15,7 @@
     $disablePageImagesTo = array(
       "Home"
     );
+    $enableBlogCharLimit = true;
 
     //===================================================
 ?>

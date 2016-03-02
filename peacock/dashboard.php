@@ -31,6 +31,9 @@
     if ($enablePageImages == null){
       $enablePageImages = false;
     }
+    if ($enableBlogCharLimit == null){
+      $enableBlogCharLimit = false;
+    }
 ?>
 <!doctype html>
 <html>
@@ -366,6 +369,9 @@
                         }
                         echo '<a href="../EditPost/'.$post['id'].'"><i class="fa fa-pencil-square-o"></i></a>';
                         echo '<a href="addToCategory.php?post='.$post['id'].'" id="addToCategoryBtn"><i class="fa fa-book"></i></a>';
+                        if ($enableBlogCharLimit == true){
+                          echo '<a href="postCharLimit.php?post='.$post['id'].'"><i class="fa fa-hand-scissors-o"></i></a>';
+                        }
                         echo '<a class="delete" href="deletePostConfirmation.php?id='
                         . $post['id'] .'&post='.strip_tags($post['title']).'"><i class="fa fa-trash-o"></i></a>';
                       echo '</span>';

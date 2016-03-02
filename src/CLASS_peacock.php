@@ -745,6 +745,26 @@ class Peacock {
       return $imageArray;
     }
 
+
+    public function getPostCharLimit($id, $file = "peacock/postCharLimit.json"){
+      $postID = $id;
+      $limit = 0;
+
+      if (file_exists($file) === true){
+          $content = file_get_contents($file);
+          $json_content = json_decode($content,true);
+          if (gettype($json_content) === "array"){
+            foreach ($json_content as $key => $value){
+              if ($value['id'] == $postID){
+                $limit = $value['limit'];
+              }
+            }
+          }
+      }
+
+      return $limit;
+    }
+
 	/*  ===== Get Functions End ========  */
 
 
