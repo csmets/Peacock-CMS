@@ -726,7 +726,7 @@
       <div class="linkbar">
         <ul>
           <li>
-            <a href="/CreatePage/normal/NewTemplate">
+            <a href="createTemplateSource.php">
               <i class="fa fa-pencil-square-o"></i> Create New Template
             </a>
           </li>

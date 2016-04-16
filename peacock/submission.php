@@ -708,8 +708,8 @@
 		//=============================================================
 		elseif ($subType == 'createTemplate'){
 
-            $templateContent = $_POST['pagecontent'];
-            $templateContent = addslashes($templateContent);
+      $templateContent = $_POST['pagecontent'];
+      $templateContent = addslashes($templateContent);
 			$templateName = $_POST['pagename'];
 			$isDraft = $_POST['draft'];
 
