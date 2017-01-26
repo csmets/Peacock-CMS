@@ -25,7 +25,8 @@ INSERT INTO `blog` (`id`, `posttitle`, `postcontent`, `date`, `draft`, `category
 CREATE TABLE IF NOT EXISTS `categories` (
 `id` int(11) NOT NULL,
   `category` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT 'none',
-  `icon` varchar(500) COLLATE utf8_unicode_ci NOT NULL
+  `icon` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `categoryOrder` int(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT 0
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `categories` (`id`, `category`, `icon`) VALUES
@@ -129,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `templates` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `templates` (`id`, `templateName`, `templateContent`, `pageName`, `pageImage`, `draft`, `templateOrder`) VALUES
-(4, 'Basic Page', '<div id="SaveContent" class="Editable">\r\n                    <div class="basicBodyText">\r\n                        Click here to start creating your page!\r\n                    </div>\r\n                </div>', 0, 0, 'no', 0);
+(4, 'Basic Page', '<div id="SaveContent" class="Editable">\r\n					  <div class="basicBodyText">\r\n						 Click here to start creating your page!\r\n					</div>\r\n				  </div>', 0, 0, 'no', 0);
 
 CREATE TABLE IF NOT EXISTS `users` (
 `id` int(11) NOT NULL,
