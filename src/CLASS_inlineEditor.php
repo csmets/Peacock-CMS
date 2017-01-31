@@ -12,8 +12,8 @@ class InlineEditor extends Peacock{
 
 
   public function run($nameBox, $ID){
-      $type = $_GET['type'];
-      $template = $_GET['template'];
+      $type = @$_GET['type'];
+      $template = @$_GET['template'];
       @$editTemplate = $_GET['e'];
 
       if ($template == 'blankPage'){
@@ -43,6 +43,7 @@ class InlineEditor extends Peacock{
     $titlePasser = '';
     $contentPasser = '';
     $imagePasser = '';
+	$javascript = '';
 
     if ($pageID == 0){
       $pageName = 'Insert Page Name';

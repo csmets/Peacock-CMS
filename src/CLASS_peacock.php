@@ -22,56 +22,56 @@ class Peacock {
 
 
 	/*	===== Get Functions Start ========	*/
-  public function getBlogPosts($limit = 0,$removeDrafts = true){
-	$DB = new DatabaseConnection;
-	if ($removeDrafts == true){
-	  $query = "SELECT * FROM blog WHERE draft='no' ORDER BY id DESC";
-	}else{
-	  $query = "SELECT * FROM blog ORDER BY id DESC";
-	}
+	public function getBlogPosts($limit = 0,$removeDrafts = true){
+		$DB = new DatabaseConnection;
+		if ($removeDrafts == true){
+			$query = "SELECT * FROM blog WHERE draft='no' ORDER BY id DESC";
+		}else{
+			$query = "SELECT * FROM blog ORDER BY id DESC";
+		}
 
-	if ($limit !== 0){
-	  $posts = $DB->fetch($query,$limit);
-	}else{
-	  $posts = $DB->fetch($query);
-	}
+		if ($limit !== 0){
+			$posts = $DB->fetch($query,$limit);
+		}else{
+			$posts = $DB->fetch($query);
+		}
 
-	return $posts;
-  }
+		return $posts;
+	}
 
 	public function getPostContent ($id, $incDraft = false, $showTags = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$draft = $get_data['draft'];
-	$useDraftFile = $_GET['draft'];
-	if ($incDraft == true && $draft == 'yes' && $useDraftFile == 'yes'){
-		if (file_exists('view/drafts/posts/postDraft-'.$id.'.json')){
-			$file = file_get_contents('view/drafts/posts/postDraft-'.$id.'.json');
-			$json = json_decode($file, true);
-			return $json['body'];
-		}
-	}else{
-		$string = stripslashes($get_data['postcontent']);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$draft = $get_data['draft'];
+		$useDraftFile = @$_GET['draft'];
+		if ($incDraft == true && $draft == 'yes' && $useDraftFile == 'yes'){
+			if (file_exists('view/drafts/posts/postDraft-'.$id.'.json')){
+				$file = file_get_contents('view/drafts/posts/postDraft-'.$id.'.json');
+				$json = json_decode($file, true);
+				return $json['body'];
+			}
+		}else{
+			$string = stripslashes($get_data['postcontent']);
 
-		if ($showTags == false){
-			$string = $this->removeHashTags($string);
-		}
-		if ($incDraft == TRUE){
-			return $string;
-		}
-		if ($incDraft == FALSE){
-			if ($get_data['draft'] == 'no'){
+			if ($showTags == false){
+				$string = $this->removeHashTags($string);
+			}
+			if ($incDraft == TRUE){
 				return $string;
+			}
+			if ($incDraft == FALSE){
+				if ($get_data['draft'] == 'no'){
+					return $string;
+				}
 			}
 		}
 	}
-	}
 
 	public function getPostDate ($id, $incDraft = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 
 		if ($incDraft == TRUE){
 			return $get_data['date'];
@@ -84,9 +84,9 @@ class Peacock {
 	}
 
 	public function getPostAuthor ($id, $incDraft = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 
 		if ($incDraft == TRUE){
 			return $get_data['user'];
@@ -99,17 +99,17 @@ class Peacock {
 	}
 
 	public function getPostAuthorName ($username){
-	$query = "SELECT * FROM users WHERE username='$username'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM users WHERE username='$username'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		$fullname = $get_data['firstname'] . ' ' . $get_data['lastname'];
 		return $fullname;
 	}
 
 	public function getPostCategory ($id, $incDraft = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 
 		if ($incDraft == TRUE){
 			return $this->getCategory($get_data['category']);
@@ -122,9 +122,9 @@ class Peacock {
 	}
 
 	public function getPostViews ($id, $incDraft = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 
 		if ($incDraft == TRUE){
 			return $get_data['views'];
@@ -138,264 +138,264 @@ class Peacock {
 
 
 	public function getPostImage($id){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		return $get_data['image'];
 	}
 
 	public function getCategoryIcon ($id){
-	$query = "SELECT * FROM categories WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM categories WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		return $get_data['icon'];
 	}
 
 	public function getUserAvatar ($username){
-	$query = "SELECT * FROM users WHERE username='$username'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM users WHERE username='$username'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		return $get_data['profileimg'];
 	}
 
-  public function getUserFirstName($username){
-	$query = "SELECT * FROM users WHERE username='$username'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+	public function getUserFirstName($username){
+		$query = "SELECT * FROM users WHERE username='$username'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		return $get_data['firstname'];
-  }
+	}
 
-  public function getCategory ($id){	//Returns Category Name
-	$query = "SELECT * FROM categories WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['category'];
-  }
-  public function getPostName ($id, $removeTags = false){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$postName = '';
-	if ($removeTags == true){
-		$postName = strip_tags($get_data['posttitle']);
-	}else{
-		$postName = $get_data['posttitle'];
+	public function getCategory ($id){	//Returns Category Name
+		$query = "SELECT * FROM categories WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['category'];
 	}
-	return stripslashes($postName);
-  }
-  public function getPageName ($id, $removeTags = false){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$pageName = '';
-	if ($removeTags == true){
-		$pageName = strip_tags($get_data['pagename']);
-	}else{
-		$pageName = $get_data['pagename'];
+	public function getPostName ($id, $removeTags = false){
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$postName = '';
+		if ($removeTags == true){
+			$postName = strip_tags($get_data['posttitle']);
+		}else{
+			$postName = $get_data['posttitle'];
+		}
+		return stripslashes($postName);
 	}
-	return stripslashes($pageName);
-  }
+	public function getPageName ($id, $removeTags = false){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$pageName = '';
+		if ($removeTags == true){
+			$pageName = strip_tags($get_data['pagename']);
+		}else{
+			$pageName = $get_data['pagename'];
+		}
+		return stripslashes($pageName);
+	}
 
 	public function getPageContent ($id){
-	$useDraftFile = $_GET['draft'];
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$draft = $get_data['draft'];
+		$useDraftFile = @$_GET['draft'];
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$draft = $get_data['draft'];
 
-	if ($draft == 'yes' && $useDraftFile == 'yes'){
-		if (file_exists("/peacock/drafts/pages/pageDraft-".$id.".json")){
-			$file = file_get_contents("/peacock/drafts/pages/pageDraft-".$id.".json");
-			$json = json_decode($file, true);
-			return $json['body'];
+		if ($draft == 'yes' && $useDraftFile == 'yes'){
+			if (file_exists("/peacock/drafts/pages/pageDraft-".$id.".json")){
+				$file = file_get_contents("/peacock/drafts/pages/pageDraft-".$id.".json");
+				$json = json_decode($file, true);
+				return $json['body'];
+			}else{
+				echo 'NO DRAFT FILE FOUND!';
+			}
 		}else{
-			echo 'NO DRAFT FILE FOUND!';
+			return stripslashes($get_data['bodycontent']);
 		}
-	}else{
-		return stripslashes($get_data['bodycontent']);
 	}
-  }
 
 	public function getPageImage ($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['image'];
-  }
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['image'];
+	}
 
-  public function getPageAdditional($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['additional'];
-  }
+	public function getPageAdditional($id){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['additional'];
+	}
 
-  public function getPageAdditional2($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['additional2'];
-  }
+	public function getPageAdditional2($id){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['additional2'];
+	}
 
-  public function getPageAdditional3($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['additional3'];
-  }
+	public function getPageAdditional3($id){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['additional3'];
+	}
 
-  public function getSiteName (){
-	$query = "SELECT * FROM site WHERE id='1'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['sitename'];
-  }
+	public function getSiteName (){
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['sitename'];
+	}
 	public function getSiteTheme (){
-	$query = "SELECT * FROM site WHERE id='1'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['theme'];
-  }
-  public function getSiteImage ($showAnyways = false){
-	$query = "SELECT * FROM site WHERE id='1'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data['useimage'] == 'yes' || $showAnyways == true){
-		return $get_data['image'];
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['theme'];
 	}
-	else{
-		return null;
+	public function getSiteImage ($showAnyways = false){
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['useimage'] == 'yes' || $showAnyways == true){
+			return $get_data['image'];
+		}
+		else{
+			return null;
+		}
 	}
-  }
-  public function getImageName ($id){
-	$query = "SELECT * FROM images WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data['imagename'] == null){
-		return $get_data['image'];
+	public function getImageName ($id){
+		$query = "SELECT * FROM images WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['imagename'] == null){
+			return $get_data['image'];
+		}
+		else{
+			return $get_data['imagename'];
+		}
 	}
-	else{
-		return $get_data['imagename'];
+	public function getImageFolders(){
+		$query = "SELECT * FROM imageFolders ORDER BY folderOrder";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		$result = array();
+		foreach($get_data as $data){
+			$result[] = $data['folderName'];
+		}
+		return $result;
 	}
-  }
-  public function getImageFolders(){
-	$query = "SELECT * FROM imageFolders ORDER BY folderOrder";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query);
-	$result = array();
-	foreach($get_data as $data){
-		$result[] = $data['folderName'];
+	public function getImages($folder = null){
+		$query = "SELECT * FROM images ORDER BY imageOrder";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		$result = array();
+		foreach($get_data as $data){
+			if ($folder == null){
+				$result[] = $data['id'];
+			}else{
+				if ($data['imageFolder'] == $folder){
+					$result[] = $data['id'];
+				}
+			}
+		}
+		return $result;
 	}
-	return $result;
-  }
-  public function getImages($folder = null){
-	$query = "SELECT * FROM images ORDER BY imageOrder";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query);
-	$result = array();
-	foreach($get_data as $data){
-	  if ($folder == null){
-		  $result[] = $data['id'];
-	  }else{
-		  if ($data['imageFolder'] == $folder){
-			  $result[] = $data['id'];
-		  }
-	  }
-	}
-	return $result;
-  }
 	public function getImageFilename ($id){
-	$query = "SELECT * FROM images WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['image'];
-  }
-  public function getSiteTags (){
-	$query = "SELECT * FROM site WHERE id='1'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['tags'];
-  }
-  public function getSiteDescription (){
-	$query = "SELECT * FROM site WHERE id='1'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['description'];
-  }
+		$query = "SELECT * FROM images WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['image'];
+	}
+	public function getSiteTags (){
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['tags'];
+	}
+	public function getSiteDescription (){
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['description'];
+	}
 	public function getLastPostID (){
-	$query = "SELECT * FROM blog ORDER BY id DESC";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['id'];
+		$query = "SELECT * FROM blog ORDER BY id DESC";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['id'];
 	}
-  public function getFirstPostID (){
-	$query = "SELECT * FROM blog";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['id'];
+	public function getFirstPostID (){
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['id'];
 	}
-  public function getLastPageID (){
-	$query = "SELECT * FROM pages ORDER BY pageorder";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data['id'];
-  }
+	public function getLastPageID (){
+		$query = "SELECT * FROM pages ORDER BY pageorder";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['id'];
+	}
 
 	public function getPageData ($id, $ColumnName){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		$sqlconnect = new Connectdb;
 		return $get_data[$ColumnName];
 	}
 
-  public function getBlogData ($id, $ColumnName){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data[$ColumnName];
-  }
+	public function getBlogData ($id, $ColumnName){
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data[$ColumnName];
+	}
 
 	public function getTableData ($id, $table, $columnName){
-	$query = "SELECT * FROM ".$table." WHERE id='".$id."'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	return $get_data[$ColumnName];
-  }
+		$query = "SELECT * FROM ".$table." WHERE id='".$id."'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data[$ColumnName];
+	}
 
 	public function getPageID ($pageName){
-	$query = "SELECT * FROM pages WHERE pagename='$pageName'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data){
-		return $get_data['id'];
-	}else{
-		echo "Page Doesn't Exist";
-	}
+		$query = "SELECT * FROM pages WHERE pagename='$pageName'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data){
+			return $get_data['id'];
+		}else{
+			echo "Page Doesn't Exist";
+		}
 	}
 
-  public function getGroupName ($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data){
-		if ($get_data['pagetype'] == 'group'){
-			return $get_data['pagename'];
+	public function getGroupName ($id){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data){
+			if ($get_data['pagetype'] == 'group'){
+				return $get_data['pagename'];
+			}
+			else{
+				echo "ID is not a Group Type";
+			}
+		}else{
+			echo "Group Doesn't Exist";
 		}
-		else{
-			echo "ID is not a Group Type";
-		}
-	}else{
-		echo "Group Doesn't Exist";
 	}
-  }
 
 
 
 	public $siteLinksFormat = "<a href='pageLink'>pageName</a>";
-  public $siteLinksGroupClass = "siteLinksGroup";
-  public $siteLinksMobileGroupClass = "siteLinksMobileGroup";
-  public $siteLinksMobileGroupClickToShow = true;
+	public $siteLinksGroupClass = "siteLinksGroup";
+	public $siteLinksMobileGroupClass = "siteLinksMobileGroup";
+	public $siteLinksMobileGroupClickToShow = true;
 
 	public function getSiteLinks($showGroupPages = false, $stripTags = true, $mobileWidth = 1024){
 
@@ -432,9 +432,9 @@ class Peacock {
 					$pageName = $this->siteLinkTags($get_data['pagename'], $stripTags);
 
 					if ($get_data['additional'] != null){
-						 $insertPageLink = str_replace("pageLink", $get_data['additional'], $format);
+						$insertPageLink = str_replace("pageLink", $get_data['additional'], $format);
 					}else{
-						 $insertPageLink = str_replace("pageLink", "#", $format);
+						$insertPageLink = str_replace("pageLink", "#", $format);
 					}
 
 					$insertPageName = str_replace("pageName", $pageName, $insertPageLink);
@@ -522,23 +522,23 @@ class Peacock {
 									}
 								});";
 							}else{
-							 echo "$('#".$pageName."Mobile').show();";
+								echo "$('#".$pageName."Mobile').show();";
 							}
-						echo "}
-					});";
-					echo "$(window).resize(function(){
-						var width = $(window).width();
-						console.log(width);
-						if (width < ".$mobileWidth." ){
-							document.getElementById('".$pageName."').style.display = 'none';
-							document.getElementById('".$pageName."Trigger').onmouseover = function(){
-								document.getElementById('".$pageName."').style.display = 'none';
-							};
-							document.getElementById('".$pageName."Trigger').onmouseout = function(){
-								document.getElementById('".$pageName."').style.display = 'none';
-							};";
-							if ($this->siteLinksMobileGroupClickToShow == true){
-								echo "
+							echo "}
+				});";
+								echo "$(window).resize(function(){
+									var width = $(window).width();
+									console.log(width);
+									if (width < ".$mobileWidth." ){
+										document.getElementById('".$pageName."').style.display = 'none';
+										document.getElementById('".$pageName."Trigger').onmouseover = function(){
+											document.getElementById('".$pageName."').style.display = 'none';
+				};
+				document.getElementById('".$pageName."Trigger').onmouseout = function(){
+					document.getElementById('".$pageName."').style.display = 'none';
+				};";
+								if ($this->siteLinksMobileGroupClickToShow == true){
+									echo "
 								var mobileGroupActive = false;
 								$('#".$pageName."Trigger').click(function(){
 									 if (mobileGroupActive == false){
@@ -549,22 +549,22 @@ class Peacock {
 										mobileGroupActive = false;
 									}
 								});";
-							}else{
-							 echo "$('#".$pageName."Mobile').show();";
-							}
-						echo "}
-						if (width > ".$mobileWidth." ){
-							document.getElementById('".$pageName."Trigger').onmouseover = function(){
-								document.getElementById('".$pageName."').style.display = 'block';
-							};
-							document.getElementById('".$pageName."Trigger').onmouseout = function(){
-								document.getElementById('".$pageName."').style.display = 'none';
-							};
-							$('#".$pageName."Mobile').hide();
-						}
-					});";
-					echo "</script>";
-					$functionCount = $functionCount + 1;
+								}else{
+									echo "$('#".$pageName."Mobile').show();";
+								}
+								echo "}
+									if (width > ".$mobileWidth." ){
+										document.getElementById('".$pageName."Trigger').onmouseover = function(){
+											document.getElementById('".$pageName."').style.display = 'block';
+				};
+				document.getElementById('".$pageName."Trigger').onmouseout = function(){
+					document.getElementById('".$pageName."').style.display = 'none';
+				};
+				$('#".$pageName."Mobile').hide();
+				}
+				});";
+									echo "</script>";
+									$functionCount = $functionCount + 1;
 				}
 			}
 
@@ -574,126 +574,126 @@ class Peacock {
 
 	}
 
-  private function siteLinkTags($pageName, $stripTags){
-	  if ($stripTags == true){
-		  return $this->limitText($pageName, 120);
-	  }
-	  elseif($stripTags == false){
-		  return $this->limitText($pageName, 120, false);
-	  }
-	  else{
-		  echo "Variable must be boolean value";
-	  }
-  }
-
-  public function returnPageLink($type, $id){
-	  if ($type == 'normal' || $type == 'homepage'){
-		  if($id == 1){
-			  $pageLink = "/index";
-		  }else{
-			  $pageName = $this->getPageName($id);
-			  $pageLink = "/page/" . $id . "/" . $pageName;
-		  }
-	  }
-
-	  elseif ($type == 'blog'){
-		  $pageLink = "/blog";
-	  }
-
-	  elseif ($type == 'contact'){
-		  $pageLink = "/contact";
-	  }
-
-	  elseif ($type == 'relink'){
-		  $pageLink = $this->getPageLink($id);
-	  }
-	  return $pageLink;
-  }
-
-  public function getSiteLinksArray(){
-
-	$query = "SELECT * FROM pages ORDER BY pageorder";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-
-	$array = array();
-	$appendArray = array();
-
-	foreach ($get_data as $data){
-	  $appendArray = array(
-		  $data['id'],
-		  $data['isGrouped'],
-		  $data['groupID'],
-		  $data['pagetype']
-	  );
-	  $array[] = $appendArray;
+	private function siteLinkTags($pageName, $stripTags){
+		if ($stripTags == true){
+			return $this->limitText($pageName, 120);
+		}
+		elseif($stripTags == false){
+			return $this->limitText($pageName, 120, false);
+		}
+		else{
+			echo "Variable must be boolean value";
+		}
 	}
-	return $array;
-  }
+
+	public function returnPageLink($type, $id){
+		if ($type == 'normal' || $type == 'homepage'){
+			if($id == 1){
+				$pageLink = "/index";
+			}else{
+				$pageName = $this->getPageName($id);
+				$pageLink = "/page/" . $id . "/" . $pageName;
+			}
+		}
+
+		elseif ($type == 'blog'){
+			$pageLink = "/blog";
+		}
+
+		elseif ($type == 'contact'){
+			$pageLink = "/contact";
+		}
+
+		elseif ($type == 'relink'){
+			$pageLink = $this->getPageLink($id);
+		}
+		return $pageLink;
+	}
+
+	public function getSiteLinksArray(){
+
+		$query = "SELECT * FROM pages ORDER BY pageorder";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+
+		$array = array();
+		$appendArray = array();
+
+		foreach ($get_data as $data){
+			$appendArray = array(
+				$data['id'],
+				$data['isGrouped'],
+				$data['groupID'],
+				$data['pagetype']
+			);
+			$array[] = $appendArray;
+		}
+		return $array;
+	}
 
 	public function getPageLink($id){
-	  $query = "SELECT * FROM pages WHERE id='$id'";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  return $get_data['additional'];
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		return $get_data['additional'];
 	}
 
 	public function getTotalBlogEntries($countDraft = true){
-	  $query = "SELECT * FROM blog";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  $count = 0;
-	  foreach ($get_data as $data){
-		  if ($countDraft == true){
-			  if ($data['posttitle'] != null){
-				  $count++;
-			  }
-		  }
-		  elseif ($countDraft == false){
-			  if ($data['posttitle'] != null && $data['draft'] == 'no'){
-				  $count++;
-			  }
-		  }
-		  else{
-			  echo "Invalid Entry: Boolean required";
-		  }
-	  }
-	  return $count;
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$count = 0;
+		foreach ($get_data as $data){
+			if ($countDraft == true){
+				if ($data['posttitle'] != null){
+					$count++;
+				}
+			}
+			elseif ($countDraft == false){
+				if ($data['posttitle'] != null && $data['draft'] == 'no'){
+					$count++;
+				}
+			}
+			else{
+				echo "Invalid Entry: Boolean required";
+			}
+		}
+		return $count;
 	}
 
 	public function getTotalActivePosts(){
-	  $query = "SELECT * FROM blog";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query);
-	  $count = 0;
-	  foreach($get_data as $data){
-		  if ($data['status'] == 'active'){
-			  $count++;
-		  }
-	  }
-	  return $count;
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		$count = 0;
+		foreach($get_data as $data){
+			if ($data['status'] == 'active'){
+				$count++;
+			}
+		}
+		return $count;
 	}
 
 	public function getFolderId($folderName){
-	  $query = "SELECT * FROM imageFolders WHERE folderName='$folderName'";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  if ($get_data['id'] != null){
-		  return $get_data['id'];
-	  }
+		$query = "SELECT * FROM imageFolders WHERE folderName='$folderName'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['id'] != null){
+			return $get_data['id'];
+		}
 	}
 
 	public function getFolderName($id){
-	  $query = "SELECT * FROM imageFolders WHERE id='$id'";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  if ($get_data['folderName'] != null){
-		  return $get_data['folderName'];
-	  }
+		$query = "SELECT * FROM imageFolders WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['folderName'] != null){
+			return $get_data['folderName'];
+		}
 	}
 
 	public function getFileContents($file){
-	  $content = "";
+		$content = "";
 		if (file_exists($file)){
 			$content = file_get_contents($file);
 		}else{
@@ -703,66 +703,66 @@ class Peacock {
 	}
 
 	public function getAllPostsByMonthAndYear ($year, $month){
-	  $query = "SELECT * FROM blog";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query);
-	  $posts = array();
-	  foreach($get_data as $data){
-		  $postYear = substr($data['date'], 0, 4);
-		  $postMonth = substr($data['date'], 5, 2);
-		  if ($postYear == $year && $postMonth == $month){
-			  $posts[] = array($data['id'],$data['posttitle'],$data['postcontent']);
-		  }
-	  }
-	  return $posts;
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		$posts = array();
+		foreach($get_data as $data){
+			$postYear = substr($data['date'], 0, 4);
+			$postMonth = substr($data['date'], 5, 2);
+			if ($postYear == $year && $postMonth == $month){
+				$posts[] = array($data['id'],$data['posttitle'],$data['postcontent']);
+			}
+		}
+		return $posts;
 	}
 
 	public function getImageListArray($folder = null){
-	  $query = "SELECT * FROM images ORDER by imageOrder";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query);
+		$query = "SELECT * FROM images ORDER by imageOrder";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
 
-	  $imageArray = array();
+		$imageArray = array();
 
-	  foreach($get_data as $data){
-		  $imageName = $data['imagename'];
-		  $imageFile = $data['image'];
-		  if ($imageName == null){
-			  $imageName = $imageFile;
-		  }
-		  if ($folder != null){
-			  $imageFolder = $data['imageFolder'];
-			  if ($imageFolder == $folder){
-				  $imageArray[$imageName][0] = $imageName;
-				  $imageArray[$imageName][1] = $imageFile;
-			  }
-		  } else {
-			  $imageArray[$imageName][0] = $imageName;
-			  $imageArray[$imageName][1] = $imageName;
-		  }
-	  }
+		foreach($get_data as $data){
+			$imageName = $data['imagename'];
+			$imageFile = $data['image'];
+			if ($imageName == null){
+				$imageName = $imageFile;
+			}
+			if ($folder != null){
+				$imageFolder = $data['imageFolder'];
+				if ($imageFolder == $folder){
+					$imageArray[$imageName][0] = $imageName;
+					$imageArray[$imageName][1] = $imageFile;
+				}
+			} else {
+				$imageArray[$imageName][0] = $imageName;
+				$imageArray[$imageName][1] = $imageName;
+			}
+		}
 
-	  return $imageArray;
+		return $imageArray;
 	}
 
 
 	public function getPostCharLimit($id, $file = "peacock/postCharLimit.json"){
-	  $postID = $id;
-	  $limit = 0;
+		$postID = $id;
+		$limit = 0;
 
-	  if (file_exists($file) === true){
-		  $content = file_get_contents($file);
-		  $json_content = json_decode($content,true);
-		  if (gettype($json_content) === "array"){
-			foreach ($json_content as $key => $value){
-			  if ($value['id'] == $postID){
-				$limit = $value['limit'];
-			  }
+		if (file_exists($file) === true){
+			$content = file_get_contents($file);
+			$json_content = json_decode($content,true);
+			if (gettype($json_content) === "array"){
+				foreach ($json_content as $key => $value){
+					if ($value['id'] == $postID){
+						$limit = $value['limit'];
+					}
+				}
 			}
-		  }
-	  }
+		}
 
-	  return $limit;
+		return $limit;
 	}
 
 	/*	===== Get Functions End ========  */
@@ -776,9 +776,9 @@ class Peacock {
 	/*	===== Check Functions Start ========  */
 
 	public function checkPostIDExists ($id){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		if ($get_data['id'] != null){
 			return TRUE;
 		}
@@ -788,9 +788,9 @@ class Peacock {
 	}
 
 	public function checkPostIDExistsNoDrafts ($id){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		if ($get_data['id'] != null && $get_data['draft'] == 'no'){
 			return TRUE;
 		}
@@ -799,10 +799,10 @@ class Peacock {
 		}
 	}
 
-  public function checkPostIDisActive ($id){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+	public function checkPostIDisActive ($id){
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		if ($get_data['id'] != null && $get_data['status'] == 'active'){
 			return TRUE;
 		}
@@ -811,22 +811,22 @@ class Peacock {
 		}
 	}
 
-  public function checkPageIDExists ($id){
-	$query = "SELECT * FROM pages WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+	public function checkPageIDExists ($id){
+		$query = "SELECT * FROM pages WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		if ($get_data['id'] != null){
 			return TRUE;
 		}
 		else {
 			return FALSE;
 		}
-  }
+	}
 
 	public function checkImageFolderExist($folder){
-	$query = "SELECT * FROM imageFolders WHERE folderName='$folder'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+		$query = "SELECT * FROM imageFolders WHERE folderName='$folder'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		if ($get_data['folderName'] != null){
 			return TRUE;
 		}
@@ -835,53 +835,53 @@ class Peacock {
 		}
 	}
 
-  public function checkUser ($user){
-	  if ($user != null){
+	public function checkUser ($user){
+		if ($user != null){
+			$query = "SELECT * FROM users WHERE username='$user'";
+			$dbq = new DatabaseConnection();
+			$get_data = $dbq->fetch($query,1);
+			if (strtolower($get_data['username']) == strtolower($user))
+			{
+				return true;
+			}else{
+				header("location:accessviolation.php");
+			}
+			$db->close();
+		}
+		else{
+			header("location:accessviolation.php");
+		}
+	}
+
+	public function checkPrivileges($user){
 		$query = "SELECT * FROM users WHERE username='$user'";
 		$dbq = new DatabaseConnection();
 		$get_data = $dbq->fetch($query,1);
-		if (strtolower($get_data['username']) == strtolower($user))
-		  {
-			  return true;
-		  }else{
-			  header("location:accessviolation.php");
-		  }
-		  $db->close();
-	  }
-	  else{
-		 header("location:accessviolation.php");
-	  }
-  }
-
-  public function checkPrivileges($user){
-	$query = "SELECT * FROM users WHERE username='$user'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$EditorType = $get_data['acctype'];
-	return $EditorType;
-  }
-
-  public function checkPluginExist($plugin){
-	$query = "SELECT * FROM plugins WHERE pluginName='$plugin'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data['pluginName'] != null){
-	  return true;
-	}else{
-	  return false;
+		$EditorType = $get_data['acctype'];
+		return $EditorType;
 	}
-  }
 
-  public function checkSiteImageStatus(){
-	$query = "SELECT * FROM site";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	if ($get_data['useimage'] != null){
-		return $get_data['useimage'];
-	}else{
-		return null;
+	public function checkPluginExist($plugin){
+		$query = "SELECT * FROM plugins WHERE pluginName='$plugin'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['pluginName'] != null){
+			return true;
+		}else{
+			return false;
+		}
 	}
-  }
+
+	public function checkSiteImageStatus(){
+		$query = "SELECT * FROM site";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if ($get_data['useimage'] != null){
+			return $get_data['useimage'];
+		}else{
+			return null;
+		}
+	}
 
 	/*	===== Check Functions End ========	*/
 
@@ -902,189 +902,189 @@ class Peacock {
 
 	/*	===== Display Functions Start ========	*/
 
-  public function displayPostImage($id){
-	$query = "SELECT * FROM blog WHERE id='$id'";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
+	public function displayPostImage($id){
+		$query = "SELECT * FROM blog WHERE id='$id'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
 		echo "<image src='image/".$get_data['image']."'>";
-  }
-
-
-  public function displayTotalPageViews(){
-	$query = "SELECT * FROM pages";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$views = 0;
-	foreach ($get_data as $data){
-	  if ($data['views'] > 0){
-		  $views = $views + $data['views'];
-	  }
 	}
-	return $views;
-  }
 
 
-  public function displayTotalBlogViews(){
-	$query = "SELECT * FROM blog";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$views = 0;
-	foreach ($get_data as $data){
-		if ($data['views'] > 0){
-			$views = $views + $data['views'];
-		}
-	}
-	return $views;
-  }
-
-  public function displayTotalSiteViews(){
-	  $views = $this->displayTotalPageViews() + $this->displayTotalBlogViews();
-	  return $views;
-  }
-
-  public function displayPopularBlog(){
-	$query = "SELECT * FROM blog ORDER BY views DESC LIMIT 3";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$rank = 1;
-	foreach ($get_data as $data){
-		echo "<p class='pWhiteBasicTxt'>$rank. ".$this->limitText($data['posttitle'], 40)."&nbsp;&nbsp;<span class='pHightlightTxt'>views: ".$data['views']."</span></p>";
-		$rank = $rank + 1;
-	}
-  }
-
-  public function displayPopularPages(){
-	$query = "SELECT * FROM pages ORDER BY views DESC LIMIT 3";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$rank = 1;
-	foreach ($get_data as $data){
-		echo "<p class='pWhiteBasicTxt'>$rank. ".$this->limitText($data['pagename'], 40)."&nbsp;&nbsp;<span class='pHightlightTxt'>views: ".$data['views']."</span></p>";
-		$rank = $rank + 1;
-	}
-  }
-
-  public function displaySEOTags(){
-	  echo "<meta name='keywords' content='".$this->getSiteTags()."'>";
-  }
-  public function displaySEODescription(){
-	  echo "<meta name='description' content='".$this->getSiteDescription()."'>";
-  }
-
-  public function displayBlogPostYearList(){
-	  $years = array();
-	  $years = $this->fetchBlogPostYears();
-	  foreach ($years as $year){
-		  echo "<a id='blogYear$year' >";
-		  echo $year;
-		  echo "</a>";
-		  echo "<br>";
-		  echo "<ul id='blogposts$year'>";
-		  $this->fetchPostsByYear($year);
-		  echo "<br>";
-		  echo "</ul>";
-		  echo "<script>";
-		  echo "var isOpen$year = false;";
-		  echo "$('#blogposts$year').hide();";
-		  echo "$('#blogYear$year').click(function(){
-					  if (isOpen$year == false){
-						  $('#blogposts$year').show();
-						  isOpen$year = true;
-					  }else{
-						  $('#blogposts$year').hide();
-						  isOpen$year = false;
-					  }
-
-				  });";
-		  echo "</script>";
-	  }
-  }
-
-  private function fetchBlogPostYears(){
-	$years = array();
-	$query = "SELECT * FROM blog";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query);
-	foreach($get_data as $data){
-	  $get_year = substr($data['date'],0,4);
-	  if ($years != null){
-		  $count = 0;
-		  foreach ($years as $year){
-			  if ($year == $get_year){
-				  $count++;
-			  }
-		  }
-		  if ($count == 0){
-			  $years[] = $get_year;
-		  }
-	  }else{
-		  $years[] = $get_year;
-	  }
-	}
-	sort($years,SORT_NUMERIC);
-	return $years;
-  }
-
-  public $showNumOfPostsOnMonth = true;
-  public $postsByMonthLink = "postByMonth.php";
-
-  private function fetchPostsByYear($year){
-	$query = "SELECT * FROM blog";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query);
-	foreach($get_data as $data){
-	  $postYear = substr($data['date'],0,4);
-	  $this->_displayPostMonths($postYear, $year);
-	}
-  }
-
-  private $_storeUsedMonths = array();
-
-  private function _displayPostMonths($postYear, $year){
-	if ($postYear == $year){
-		$postMonth =  substr($data['date'],5,2);
-		$isUsed = false;
-		foreach($this->_storeUsedMonths as $month){
-			if ($month == $postMonth){
-				$isUsed = true;
+	public function displayTotalPageViews(){
+		$query = "SELECT * FROM pages";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$views = 0;
+		foreach ($get_data as $data){
+			if ($data['views'] > 0){
+				$views = $views + $data['views'];
 			}
 		}
-		if ($isUsed == false){
-			echo "<a href='$this->postsByMonthLink?year=$year&month=$postMonth' >";
-			if ($this->showNumOfPostsOnMonth == true){
-				echo $this->returnMonthName($postMonth)." (".$this->countMonthlyPosts($year,$postMonth).")";
-			}else{
-				echo $this->returnMonthName($postMonth);
+		return $views;
+	}
+
+
+	public function displayTotalBlogViews(){
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$views = 0;
+		foreach ($get_data as $data){
+			if ($data['views'] > 0){
+				$views = $views + $data['views'];
 			}
+		}
+		return $views;
+	}
+
+	public function displayTotalSiteViews(){
+		$views = $this->displayTotalPageViews() + $this->displayTotalBlogViews();
+		return $views;
+	}
+
+	public function displayPopularBlog(){
+		$query = "SELECT * FROM blog ORDER BY views DESC LIMIT 3";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$rank = 1;
+		foreach ($get_data as $data){
+			echo "<p class='pWhiteBasicTxt'>$rank. ".$this->limitText($data['posttitle'], 40)."&nbsp;&nbsp;<span class='pHightlightTxt'>views: ".$data['views']."</span></p>";
+			$rank = $rank + 1;
+		}
+	}
+
+	public function displayPopularPages(){
+		$query = "SELECT * FROM pages ORDER BY views DESC LIMIT 3";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$rank = 1;
+		foreach ($get_data as $data){
+			echo "<p class='pWhiteBasicTxt'>$rank. ".$this->limitText($data['pagename'], 40)."&nbsp;&nbsp;<span class='pHightlightTxt'>views: ".$data['views']."</span></p>";
+			$rank = $rank + 1;
+		}
+	}
+
+	public function displaySEOTags(){
+		echo "<meta name='keywords' content='".$this->getSiteTags()."'>";
+	}
+	public function displaySEODescription(){
+		echo "<meta name='description' content='".$this->getSiteDescription()."'>";
+	}
+
+	public function displayBlogPostYearList(){
+		$years = array();
+		$years = $this->fetchBlogPostYears();
+		foreach ($years as $year){
+			echo "<a id='blogYear$year' >";
+			echo $year;
 			echo "</a>";
 			echo "<br>";
-			$this->_storeUsedMonths[] = $postMonth;
+			echo "<ul id='blogposts$year'>";
+			$this->fetchPostsByYear($year);
+			echo "<br>";
+			echo "</ul>";
+			echo "<script>";
+			echo "var isOpen$year = false;";
+			echo "$('#blogposts$year').hide();";
+			echo "$('#blogYear$year').click(function(){
+				if (isOpen$year == false){
+					$('#blogposts$year').show();
+					isOpen$year = true;
+		}else{
+			$('#blogposts$year').hide();
+			isOpen$year = false;
+		}
+
+		});";
+									echo "</script>";
 		}
 	}
-  }
 
-  private function countMonthlyPosts($year, $month){
-	$query = "SELECT * FROM blog";
-	$dbq = new DatabaseConnection();
-	$get_data = $dbq->fetch($query,1);
-	$count = 0;
-	if ($dbq->is_multidim_array() == true){
-	  foreach ($get_data as $data){
-		  $getMonth = substr($data['date'],5,2);
-		  $getYear = substr($data['date'],0,4);
-		  if ($year == $getYear && $month == $getMonth){
-			  $count++;
-		  }
-	  }
-	}else{
-	  $getMonth = substr($get_data['date'],5,2);
-	  $getYear = substr($get_data['date'],0,4);
-	  if ($year == $getYear && $month == $getMonth){
-		  $count++;
-	  }
+	private function fetchBlogPostYears(){
+		$years = array();
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		foreach($get_data as $data){
+			$get_year = substr($data['date'],0,4);
+			if ($years != null){
+				$count = 0;
+				foreach ($years as $year){
+					if ($year == $get_year){
+						$count++;
+					}
+				}
+				if ($count == 0){
+					$years[] = $get_year;
+				}
+			}else{
+				$years[] = $get_year;
+			}
+		}
+		sort($years,SORT_NUMERIC);
+		return $years;
 	}
-	return $count;
-  }
+
+	public $showNumOfPostsOnMonth = true;
+	public $postsByMonthLink = "postByMonth.php";
+
+	private function fetchPostsByYear($year){
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		foreach($get_data as $data){
+			$postYear = substr($data['date'],0,4);
+			$this->_displayPostMonths($postYear, $year);
+		}
+	}
+
+	private $_storeUsedMonths = array();
+
+	private function _displayPostMonths($postYear, $year){
+		if ($postYear == $year){
+			$postMonth =  substr($data['date'],5,2);
+			$isUsed = false;
+			foreach($this->_storeUsedMonths as $month){
+				if ($month == $postMonth){
+					$isUsed = true;
+				}
+			}
+			if ($isUsed == false){
+				echo "<a href='$this->postsByMonthLink?year=$year&month=$postMonth' >";
+				if ($this->showNumOfPostsOnMonth == true){
+					echo $this->returnMonthName($postMonth)." (".$this->countMonthlyPosts($year,$postMonth).")";
+				}else{
+					echo $this->returnMonthName($postMonth);
+				}
+				echo "</a>";
+				echo "<br>";
+				$this->_storeUsedMonths[] = $postMonth;
+			}
+		}
+	}
+
+	private function countMonthlyPosts($year, $month){
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$count = 0;
+		if ($dbq->is_multidim_array() == true){
+			foreach ($get_data as $data){
+				$getMonth = substr($data['date'],5,2);
+				$getYear = substr($data['date'],0,4);
+				if ($year == $getYear && $month == $getMonth){
+					$count++;
+				}
+			}
+		}else{
+			$getMonth = substr($get_data['date'],5,2);
+			$getYear = substr($get_data['date'],0,4);
+			if ($year == $getYear && $month == $getMonth){
+				$count++;
+			}
+		}
+		return $count;
+	}
 
 	public $Months = array(
 		"January",
@@ -1154,54 +1154,55 @@ class Peacock {
 	//Other public functions
 
 	public function isPageSourceEditingAllow(){
-	  $query = "SELECT * FROM site WHERE id='1'";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  $value = $get_data['allowPageSource'];
-	  if ($value == 'yes'){
-		  $value = true;
-	  }else{
-		  $value = false;
-	  }
-	  return $value;
+		$query = "SELECT * FROM site WHERE id='1'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		$value = $get_data['allowPageSource'];
+		if ($value == 'yes'){
+			$value = true;
+		}else{
+			$value = false;
+		}
+		return $value;
 	}
 
 	public function numOfCategoryPosts($Category){
-	  $query = "SELECT * FROM blog WHERE category='$Category'";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query);
-	  $count = 0;
-	  foreach($get_data as $row){
-		if ($row['category'] && $row['status'] == 'active'){
-			$count = $count + 1;
+		$query = "SELECT * FROM blog WHERE category='$Category'";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query);
+		$count = 0;
+		foreach($get_data as $row){
+			$status = @$row['status'];
+			if ($row['category'] && $status == 'active'){
+				$count = $count + 1;
+			}
 		}
-	  }
-	  return $count;
+		return $count;
 	}
 
 	public function blogExist (){
-	  $query = "SELECT * FROM blog";
-	  $dbq = new DatabaseConnection();
-	  $get_data = $dbq->fetch($query,1);
-	  if($dbq->is_multidim_array() == true){
-		foreach ($get_data as $data){
-		  if ($data['id'] == NULL){
-			return FALSE;
-			break;
-		  }else{
-			return TRUE;
-			break;
-		  }
-		}
-	  }else{
-		if ($get_data['id'] == NULL){
-		  return FALSE;
-		  break;
+		$query = "SELECT * FROM blog";
+		$dbq = new DatabaseConnection();
+		$get_data = $dbq->fetch($query,1);
+		if($dbq->is_multidim_array() == true){
+			foreach ($get_data as $data){
+				if ($data['id'] == NULL){
+					return FALSE;
+					break;
+				}else{
+					return TRUE;
+					break;
+				}
+			}
 		}else{
-		  return TRUE;
-		  break;
+			if ($get_data['id'] == NULL){
+				return FALSE;
+				break;
+			}else{
+				return TRUE;
+				break;
+			}
 		}
-	  }
 	}
 
 	public function removePageMargins(){
@@ -1265,15 +1266,15 @@ class Peacock {
 		}
 
 		echo '<script>
-		$(document).ready(function(){';
+			$(document).ready(function(){';
 
-		if ($htmlOutput == ''){
-			echo '$(".NewsContentWrapper").hide();';
-		}else{
-			echo '$("#blogfeed").append("'.$htmlOutput.'");';
-		}
+if ($htmlOutput == ''){
+	echo '$(".NewsContentWrapper").hide();';
+}else{
+	echo '$("#blogfeed").append("'.$htmlOutput.'");';
+}
 
-		echo '});
+echo '});
 		</script>';
 
 

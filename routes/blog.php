@@ -5,7 +5,7 @@ class RouteTo{
     $peacock =new Peacock;
     $Theme = $peacock->getSiteTheme();
     $values = explode("/",$url);
-    if ($values[1] != null){
+    if (isset($values[1])){
       //Page reference
       if ($values[1] == 'page'){
         $_GET['page'] = $values[2];
