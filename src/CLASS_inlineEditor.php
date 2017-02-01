@@ -44,6 +44,7 @@ class InlineEditor extends Peacock{
     $contentPasser = '';
     $imagePasser = '';
 	$javascript = '';
+	$form = '';
 
     if ($pageID == 0){
       $pageName = 'Insert Page Name';
