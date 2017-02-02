@@ -13,7 +13,7 @@ class RouteTo{
       //Page reference
       $_GET['id'] = $values[1];
     }
-    if ($values[2] == 'draft'){
+    if (@$values[2] == 'draft'){
       $_GET['draft'] = 'yes';
     }
     $_GET['type'] = 'blogPost';

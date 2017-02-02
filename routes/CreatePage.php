@@ -13,11 +13,11 @@ class RouteTo{
       //Page Type
       $_GET['type'] = $values[1];
     }
-    if ($values[2] != null){
+    if (@$values[2] != null){
       //Page Template
       $_GET['template'] = $values[2];
     }
-    if ($values[3] == 'yes'){
+    if (@$values[3] == 'yes'){
       $_GET['e'] = 'yes';
     }
 

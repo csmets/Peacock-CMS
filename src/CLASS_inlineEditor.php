@@ -196,7 +196,7 @@ class InlineEditor extends Peacock{
 
                     @$templateID = $_GET['template'];
 
-                    if ($template != null){
+                    if (isset($template)){
                         $form .= "<input type='hidden' name='templateID' value='".$templateID."'/>";
                     }
 

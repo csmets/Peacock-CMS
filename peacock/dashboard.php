@@ -28,7 +28,7 @@
 	if (isset($blogging) == false){
 		$blogging = true;
 	}
-	if ($enablePageImages == null){
+	if (!isset($enablePageImages)){
 		$enablePageImages = false;
 	}
 	if (isset($enableBlogCharLimit) == false){
