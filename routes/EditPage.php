@@ -9,11 +9,11 @@ class RouteTo{
 
     $Theme = $peacock->getSiteTheme();
     $values = explode("/",$url);
-    if ($values[1] != null){
+    if (@$values[1] != null){
       //Page reference
       $_GET['id'] = $values[1];
     }
-    if ($values[2] == 'draft'){
+    if (@$values[2] == 'draft'){
       $_GET['draft'] = 'yes';
     }
 

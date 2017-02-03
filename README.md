@@ -1,11 +1,9 @@
 # Peacock CMS
-Peacock CMS is created by [Clyde Smets](http://clydesmets.com). It’s a flexible PHP/MYSQL content management system that helps developers and designers create beautiful websites with a simple but powerful back-end. Which allows the not-so-tech-savy client to be able to edit their website themselves.
-
-![alt tag](http://peacockcms.com/banner.png)
+Peacock CMS is created by [Clyde Smets](http://clydesmets.com). It’s a PHP/MYSQL content management system that helps developers and designers create websites with a simple extendable back-end. It's aim is to allow the not-so-tech-savy client to be able to edit their website themselves.
 
 Download a Zip copy of the current source and completely change the code to how you want it or Fork it and make changes that can help all of us.
 
-Peacock is constantly getting improved and changed around. Users who are using the first release of Peacock is it recommended you keep using that version until you are ready to start a new project. Check out the [releases](https://github.com/csmets/Peacock-CMS/releases) to download the previous version.
+Peacock is constantly getting improved and changed around. Check out the [releases](https://github.com/csmets/Peacock-CMS/releases) to download the previous version.
 
 # Features
 - Inline Editing!
@@ -45,7 +43,7 @@ Unfortunately, the way the framework has been setup you can not use the site und
 You will instead have to create a sub domain pointing to that folder for this to work. I will try to work on fixing this issue.
 
 **NOTE**
-There is a known issue with the inline editor when the site is running locally. However it runs fine in FireFox. Chrome & Safari are having a hard time finding files during AJAX calls. I  will be working to resolve this issue. 
+There is a known issue with the inline editor when the site is running locally. However it runs fine in FireFox. Chrome & Safari are having a hard time finding files during AJAX calls. I	will be working to resolve this issue. 
 
 There are NO issues with the inline editor when it’s up on a server! :-)
 

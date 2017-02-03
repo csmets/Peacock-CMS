@@ -508,7 +508,7 @@
       $contentArray = array();
       $contentArray['title'] = $fetchData['pagename'];
       $contentArray['body'] = $fetchData['bodycontent'];
-      //$peacock->storeToFile('view/backups/pages/pageBackup-'.$pageId.'.json',$contentArray, 'JSON');
+      $peacock->storeToFile('view/backups/pages/pageBackup-'.$pageId.'.json',$contentArray, 'JSON');
       //=======================
 
       $getBodyContents = new AddEditables();
@@ -708,8 +708,8 @@
 		//=============================================================
 		elseif ($subType == 'createTemplate'){
 
-            $templateContent = $_POST['pagecontent'];
-            $templateContent = addslashes($templateContent);
+      $templateContent = $_POST['pagecontent'];
+      $templateContent = addslashes($templateContent);
 			$templateName = $_POST['pagename'];
 			$isDraft = $_POST['draft'];
 

@@ -11,5 +11,7 @@
     $galleryFile = "Gallery.php";
     $plugins[] = "Gallery"; //Add to plugin list.
     $usePageGroups = false;
+    $disableEditOnPages = null;
+	$enablePageImagesTo = null;
     //===================================================
 ?>

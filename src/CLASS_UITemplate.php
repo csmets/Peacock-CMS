@@ -62,7 +62,8 @@ class UITemplate{
         if (gettype($title) != 'string'){
           die('FUNCTION "title()" return is not a STRING');
         }
-        if ($html->find('div[id="title"]', 0)->innertext){
+		// Put in title name if field is supplied
+        if (@$html->find('div[id="title"]', 0)->innertext){
           $html->find('div[id="title"]', 0)->innertext = $title;
         }
       }
