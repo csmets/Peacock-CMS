@@ -47,10 +47,5 @@ There is a known issue with the inline editor when the site is running locally. 
 
 There are NO issues with the inline editor when it’s up on a server! :-)
 
-# Links
-[Peacock CMS Homepage](http://peacockcms.com)
-
-[Peacock Documentation](http://docs.peacockcms.com) *Please beware it’s a little outdated for version 1.1.0
-
 # License
 GNU General Public License V3
