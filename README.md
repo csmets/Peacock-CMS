@@ -1,5 +1,13 @@
 # Peacock CMS
-Peacock CMS is created by [Clyde Smets](http://clydesmets.com). It’s a PHP/MYSQL content management system that helps developers and designers create websites with a simple extendable back-end. It's aim is to allow the not-so-tech-savy client to be able to edit their website themselves.
+
+**This project is no longer be active and is kept for my historical archive. There are too many things to maintain and is honestly a mess. I learnt a lot whilst working on this project and would like to thank all those who have supported me in it's develop.**
+
+> Dear Future me,
+> Please don't make another large CMS by yourself using all your own implementations. It's a lot of work!
+
+---
+
+Peacock CMS is created by me (Clyde). It’s a PHP/MYSQL content management system that helps developers and designers create websites with a simple extendable back-end. It's aim is to allow the not-so-tech-savy client to be able to edit their website themselves.
 
 Download a Zip copy of the current source and completely change the code to how you want it or Fork it and make changes that can help all of us.
 
