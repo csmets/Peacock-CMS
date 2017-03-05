@@ -1,8 +1,9 @@
 # Peacock CMS
 
-**This project is no longer be active and is kept for my historical archive. There are too many things to maintain and is honestly a mess. I learnt a lot whilst working on this project and would like to thank all those who have supported me in it's develop.**
+**This project is no longer active and is kept for my historical archive. There are too many things to maintain and is honestly a mess. I learnt a lot whilst working on this project and would like to thank all those who have supported me in it's develop.**
 
 > Dear Future me,
+>
 > Please don't make another large CMS by yourself using all your own implementations. It's a lot of work!
 
 ---
